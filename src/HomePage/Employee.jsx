@@ -69,8 +69,7 @@ export default function Employee() {
             const response = await fetch(`https://talents-backend.azurewebsites.net/api/v1/employeeManager/employees/${id}`, {
                 method: 'DELETE',
                 headers:{
-                    'Authorization':`Bearer ${token}`,
-                    'Content-Type':'application/json'
+                    'Authorization':`Bearer ${token}`
                 }
             });
             if (response.ok) {
