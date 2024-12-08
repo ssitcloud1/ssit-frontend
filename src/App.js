@@ -7,6 +7,10 @@ import Dashboard from './HomePage/Dashboard';
 import Employee from './HomePage/Employee';
 import EmployeeDetails from "./EmployeeComponents/EmployeeDetails";
 import TokenExpirationCheck from './Components/TokenExpirationCheck';
+import Contacts from './HomePage/MyContacts/Contacts';
+import NewContacts from './HomePage/MyContacts/NewContacts';
+import UpdateContacts from './HomePage/MyContacts/UpdateContacts';
+import ContactsDetails from './HomePage/MyContacts/ContactsDetails';
 // import { jwtDecode } from 'jwt-decode';
 // import  { useEffect} from 'react';
 // import { useNavigate } from 'react-router-dom';
@@ -47,6 +51,10 @@ function Main() {
                 <Route path="/employee" element={<Employee />} />
                 {/* Add more routes as needed */}
                 <Route path="/employeedetails/:employeeId" element={<EmployeeDetails />} />
+                <Route path="/Contacts" element={<Contacts/>} />
+                <Route path='/NewContacts' element={<NewContacts/>}/>
+                <Route path='/ContactsDetails/:contactId' element={<ContactsDetails/>}/>
+                <Route path='/UpdateContacts/:contactId' element={<UpdateContacts/>}/>
             </Routes>
         </>
     );
