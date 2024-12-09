@@ -37,6 +37,7 @@ const Separator = () => <hr className="my-4" />;
 export default function EmployeeDetails() {
     const { employeeId } = useParams();
     const [employee, setEmployee] = useState(null);
+    const id=employeeId;
  
     useEffect(() => {
         const fetchEmployee = async () => {
@@ -45,7 +46,7 @@ export default function EmployeeDetails() {
                 console.log(token);
                 console.log(employeeId);
                 console.log("upto");
-                const response = await axios.get(`https://talents-backend.azurewebsites.net/api/v1/employeeManager/employees/${employeeId}`,{
+                const response = await axios.get(`https://talents-backend.azurewebsites.net/api/v1/employeeManager/employees/${id}`,{
                     method:'GET',
                     headers:{
                         'Authorization':`Bearer ${token}`,
