@@ -63,26 +63,33 @@ export default function Employee() {
         }
     };
  
-    const handleDeleteEmployee = async (id) => {
-        const token= localStorage.getItem('token');
+    const handleDeleteEmployee = async (employeeId) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error("Token is missing. Cannot delete employee.");
+            navigate('/login');
+            return;
+        }
+
         try {
-            const response = await fetch(`https://talents-backend.azurewebsites.net/api/v1/employeeManager/employees/${id}`, {
+            const response = await fetch(`https://talents-backend.azurewebsites.net/api/v1/employeeManager/employees/${employeeId}`, {
                 method: 'DELETE',
-                headers:{
-                    'Authorization':`Bearer ${token}`
+                headers: {
+                    'Authorization': `Bearer ${token}`
                 }
             });
+
             if (response.ok) {
                 fetchEmployees();
             } else {
                 const errorData = await response.json();
-                console.error('Failed to delete employee:', errorData);
+                console.error("Failed to delete employee:", errorData);
             }
         } catch (error) {
-            console.error('Error while deleting employee:', error);
+            console.error("Error while deleting employee:", error.message);
         }
     };
- 
+
     const handleEmployeeAdded = () => {
         fetchEmployees();
         setIsModalOpen(false);
