@@ -217,7 +217,7 @@ export default function Employee() {
                                                     <div className="ml-4">
                                                         <button
                                                             className="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors duration-200"
-                                                            onClick={() => navigate(`/employeedetails/${employee.employeeId}`)}
+                                                            onClick={() => navigate(`/employeedetails/${employee.id}`)}
                                                         >
                                                             {employee.firstName} {employee.lastName}
                                                         </button>
