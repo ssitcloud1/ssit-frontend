@@ -30,7 +30,7 @@ const Contacts=()=>{
 
       const contactsTable=()=>{
         const searchData=contacts.filter(each=>
-            each.personName.toLowerCase().includes(searchValue.toLowerCase())
+            each.personName.toLowerCase().startsWith(searchValue.toLowerCase())
           )
         return (<div>
             <table className="min-w-full divide-y divide-gray-200 mt-10">

@@ -23,6 +23,7 @@ const NewContacts = () => {
     });
     const[isAdding, setIsAdding]=useState(false);
     const [isError, setIsError]=useState(false);
+    const [showPopup, setShowPopup] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -38,33 +39,38 @@ const NewContacts = () => {
             setIsError(false);
             setIsAdding(true);
         await axios.post("https://talents-backend2.azurewebsites.net//apis/employees/contacts/contacts", formData);
-        setFormData({
-            contactCreatedEmployee: localStorage.getItem("email"),
-            personName: '',
-            relation:'',
-            countryCode:'',
-            personMobile: '',
-            personEmail: '',
-            company:'',
-            country: '',
-            state: '',
-            address: '',
-            pincode: '',
-            bankName: '',
-            bankCode: '',
-            accountNumber: '',
-            accountName: '',
-            otherAccountInformation: '',
-            bankAddress: ''
-        });
         setIsAdding(false);
+        setShowPopup(true);
         }
         else{
             setIsError(true);
         }
     };
+ const handleClosePopup = () => {
+     setFormData({
+                 contactCreatedEmployee: localStorage.getItem("email"),
+                 personName: '',
+                 relation:'',
+                 countryCode:'',
+                 personMobile: '',
+                 personEmail: '',
+                 company:'',
+                 country: '',
+                 state: '',
+                 address: '',
+                 pincode: '',
+                 bankName: '',
+                 bankCode: '',
+                 accountNumber: '',
+                 accountName: '',
+                 otherAccountInformation: '',
+                 bankAddress: ''
+             });
+    setShowPopup(false);
+  };
 
     return (
+        <div>
         <form onSubmit={handleSubmit} className="w-full max-w-4xl mx-auto p-8 bg-white shadow-md rounded-md h-full">
             <h2 className="text-3xl font-bold mb-6">Person Information</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -175,7 +181,42 @@ const NewContacts = () => {
             {isError && <p className='text-red-600'>*Please Fill Mandatory Fields</p>}
             </div>
         </form>
+        {showPopup && (
+                <div style={popupStyle}>
+                  <div style={popupContentStyle}>
+                    <h2> {formData.personName} contact has submitted successfully!</h2>
+
+
+                    <button
+                      onClick={handleClosePopup}
+                      className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              )}
+        </div>
     );
+};
+
+const popupStyle = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
+const popupContentStyle = {
+  backgroundColor: 'white',
+  padding: '20px',
+  borderRadius: '5px',
+  textAlign: 'center',
 };
 
 export default NewContacts;
