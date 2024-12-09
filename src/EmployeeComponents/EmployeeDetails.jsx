@@ -44,7 +44,6 @@ export default function EmployeeDetails() {
             try {
                 const token= localStorage.getItem('token');
                 console.log(token);
-                console.log(employeeId);
                 console.log("upto");
                 const response = await axios.get(`https://talents-backend.azurewebsites.net/api/v1/employeeManager/employees/${id}`,{
                     method:'GET',
