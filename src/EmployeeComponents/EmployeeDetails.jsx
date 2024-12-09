@@ -62,7 +62,7 @@ export default function EmployeeDetails() {
             }
         };
         fetchEmployee();
-    }, [employeeId]);
+    }, [id]);
  
     if (!employee) {
         return <div className="flex justify-center items-center h-screen"><Loader /></div>;
