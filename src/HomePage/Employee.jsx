@@ -15,7 +15,7 @@ import {
 import ModalWrapper from '../EmployeeComponents/ModalWrapper';
 import MultiStepForm from '../EmployeeComponents/MultiStepForm';
 import Loader from "../Assets/Loader";
- 
+
 export default function Employee() {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,26 +23,27 @@ export default function Employee() {
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [employeesPerPage] = useState(7);
- 
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);  // Delete modal state
+    const [employeeToDelete, setEmployeeToDelete] = useState(null);
     useEffect(() => {
         const email = localStorage.getItem('email');
         const role = localStorage.getItem('role');
- 
+
         if (!email || !role) {
             window.location.reload(); // Reload the entire application
- 
+
             navigate('/login');
         } else {
             fetchEmployees();
         }
     }, [navigate]);
- 
- 
+
+
     const fetchEmployees = async () => {
        const token= localStorage.getItem('token');
         setLoading(true);
         try {
-            const response = await fetch('https://talents-backend.azurewebsites.net/api/v1/employeeManager/employees',{
+            const response = await fetch('http://localhost:8085/api/v1/employeeManager/employees',{
                 method:'GET',
                 headers:{
                     'Authorization':`Bearer ${token}`,
@@ -62,7 +63,7 @@ export default function Employee() {
             setLoading(false);
         }
     };
- 
+
     const handleDeleteEmployee = async (employeeId) => {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -81,6 +82,8 @@ export default function Employee() {
 
             if (response.ok) {
                 fetchEmployees();
+                setIsDeleteModalOpen(false);  // Close delete confirmation modal
+
             } else {
                 const errorData = await response.json();
                 console.error("Failed to delete employee:", errorData);
@@ -94,27 +97,36 @@ export default function Employee() {
         fetchEmployees();
         setIsModalOpen(false);
     };
- 
+
+    const handleDeleteModalOpen = (employee) => {
+        setEmployeeToDelete(employee);
+        setIsDeleteModalOpen(true);  // Open delete confirmation modal
+    };
+
+    const handleDeleteModalClose = () => {
+        setIsDeleteModalOpen(false);
+    };
+
     const handleOpenModal = () => setIsModalOpen(true);
     const handleCloseModal = () => setIsModalOpen(false);
- 
+
     const totalEmployees = employees.length;
     const totalAdmins = employees.filter(emp => emp.role === 'Admin').length;
     const totalDepartments = [...new Set(employees.map(emp => emp.department))].length;
- 
+
     // Pagination logic
     const indexOfLastEmployee = currentPage * employeesPerPage;
     const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
     const currentEmployees = employees.slice(indexOfFirstEmployee, indexOfLastEmployee);
     const totalPages = Math.ceil(employees.length / employeesPerPage);
- 
+
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
- 
+
     return (
         <div className="min-h-screen bg-gray-100 w-full">
             <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
                 <h1 className="text-3xl font-bold text-gray-900 mb-8">Employee Dashboard</h1>
- 
+
                 {/* Metrics Section */}
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 mb-8">
                     <div className="bg-white overflow-hidden shadow rounded-lg">
@@ -163,14 +175,14 @@ export default function Employee() {
                         </div>
                     </div>
                 </div>
- 
+
                 {/* Employee List Section */}
                 <div className="bg-white shadow overflow-hidden sm:rounded-lg">
                     <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
                         <h2 className="text-xl leading-6 font-bold text-gray-900">Employee List</h2>
                         {/*here*/}
- 
- 
+
+
                         {/*here*/}
                         <button
                             onClick={handleOpenModal}
@@ -213,7 +225,7 @@ export default function Employee() {
                                         <tr key={`${employee.corporateEmail}-${employee.firstName}`}>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="flex items-center">
- 
+
                                                     <div className="ml-4">
                                                         <button
                                                             className="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors duration-200"
@@ -237,7 +249,7 @@ export default function Employee() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-lg font-medium">
                                                 <button
-                                                    onClick={() => handleDeleteEmployee(employee.id)}
+                                                    onClick={() => handleDeleteModalOpen(employee)}
                                                     className="text-red-600 hover:text-red-900"
                                                 >
                                                     <TrashIcon className="h-5 w-5" aria-hidden="true" />
@@ -248,7 +260,7 @@ export default function Employee() {
                                     </tbody>
                                 </table>
                             </div>
- 
+
                             {/* Pagination */}
                             <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
                                 <div className="flex-1 flex justify-between sm:hidden">
@@ -312,11 +324,36 @@ export default function Employee() {
                     )}
                 </div>
             </div>
- 
+
             {/* Add Employee Modal */}
             <ModalWrapper open={isModalOpen} onClose={handleCloseModal}>
                 <MultiStepForm onSubmit={handleEmployeeAdded} onCancel={handleCloseModal} />
             </ModalWrapper>
+
+
+
+
+            {isDeleteModalOpen && (
+                <ModalWrapper open={isDeleteModalOpen} onClose={handleDeleteModalClose}>
+                    <div className="p-4 text-center">
+                        <h2 className="text-xl font-bold mb-4">Are you sure you want to delete {employeeToDelete?.firstName} {employeeToDelete?.lastName}?</h2>
+                        <div className="flex justify-center space-x-4">
+                            <button
+                                onClick={() => handleDeleteEmployee(employeeToDelete.id)}
+                                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                            >
+                                Yes, Delete
+                            </button>
+                            <button
+                                onClick={handleDeleteModalClose}
+                                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </ModalWrapper>
+            )}
         </div>
     );
 }

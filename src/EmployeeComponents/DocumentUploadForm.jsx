@@ -1,3 +1,6 @@
+
+
+
 import { useState } from "react";
 import axios from 'axios';
 
@@ -62,11 +65,11 @@ const DocumentUploadForm = ({ formData, onNext, onBack, onCancel, onFormDataChan
             const response = await axios.post('https://talents-backend.azurewebsites.net/api/v1/employeeManager/add', formDataToSend, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-               
+
                     'Authorization': `Bearer ${token}` // Add Authorization header with JWT token
-                    
+
                 }
-                
+
             });
 
             setSubmissionMessage('Documents uploaded successfully!');

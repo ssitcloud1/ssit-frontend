@@ -1,7 +1,42 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
 const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange }) => {
     const [errors, setErrors] = useState({});
+
+    const [employees, setEmployees] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [employeeExists, setEmployeeExists] = useState(false);
+
+    useEffect(() => {
+        const fetchEmployees = async () => {
+            const token = localStorage.getItem('token');
+            setLoading(true);
+            try {
+                const response = await fetch('https://talents-backend.azurewebsites.net/api/v1/employeeManager/employees', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch employees');
+                }
+
+                const data = await response.json();
+                setEmployees(data);
+            } catch (error) {
+                console.error('Error fetching employees:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchEmployees();
+    }, []);
+
+
 
     const validate = () => {
         const newErrors = {};
@@ -21,19 +56,68 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
             newErrors.corporateEmail = "Please enter a valid email address.";
         }
 
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@middlewaretalents\.com$/;
+        if (!emailPattern.test(formData.corporateEmail)) {
+            newErrors.corporateEmail = "Please enter a valid email address with @middlewaretalents.com domain.";
+        }
         return newErrors;
     };
 
-    const handleSubmit = (event) => {
+
+    // const checkEmployeeIdExists = async (employeeId) => {
+    //     try {
+    //         const response = await fetch(`http://localhost:8085/api/v1/employeeManager/exists/${employeeId}`);
+    //         const data = await response.json();
+    //         if (data === true) {
+    //             return true; // Employee ID exists
+    //         } else {
+    //             return false; // Employee ID does not exist
+    //         }
+    //     } catch (error) {
+    //         console.error('Error checking employee ID:', error);
+    //         return false;
+    //     }
+    // };
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const validationErrors = validate();
         setErrors(validationErrors);
 
         // Check if there are no errors before proceeding
         if (Object.keys(validationErrors).length === 0) {
-            onNext(); // Proceed to next step
+            try {
+                // Send the request to check if Employee ID exists
+                const response = await fetch(`https://talents-backend.azurewebsites.net/api/v1/employeeManager/exists/${formData.employeeId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error checking employee ID');
+                }
+
+                const data = await response.json(); // Try to parse the response as JSON
+
+                if (data === true) {
+                    setEmployeeExists(true); // Employee ID exists
+                    setErrors({ employeeId: 'Employee ID already exists in the database.' });
+                } else {
+                    setEmployeeExists(false); // Employee ID does not exist
+                    onNext(); // Proceed to next step if employee ID is valid
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // Handle unexpected errors (e.g., network issues)
+                setErrors({ employeeId: 'There was an error checking the Employee ID. Please try again.' });
+            }
         }
     };
+
+
 
     return (
         <form onSubmit={handleSubmit}>
@@ -52,7 +136,7 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
                                     name="companyName"
                                     type="text"
                                     value={formData.companyName}
-                                    onChange={(e) => onFormDataChange({ companyName: e.target.value })}
+                                    onChange={(e) => onFormDataChange({companyName: e.target.value})}
                                     className="block w-full rounded-md border-0 py-2.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6"
                                 />
                                 {errors.companyName && <p className="text-sm text-red-600">{errors.companyName}</p>}
@@ -69,7 +153,7 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
                                     name="employeeId"
                                     type="text"
                                     value={formData.employeeId}
-                                    onChange={(e) => onFormDataChange({ employeeId: e.target.value })}
+                                    onChange={(e) => onFormDataChange({employeeId: e.target.value})}
                                     className="block w-full rounded-md border-0 py-2.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6"
                                 />
                                 {errors.employeeId && <p className="text-sm text-red-600">{errors.employeeId}</p>}
@@ -77,7 +161,8 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
                         </div>
 
                         <div className="sm:col-span-4">
-                            <label htmlFor="corporate-email" className="block text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor="corporate-email"
+                                   className="block text-sm font-medium leading-6 text-gray-900">
                                 Corporate Email
                             </label>
                             <div className="mt-2">
@@ -86,10 +171,11 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
                                     name="corporateEmail"
                                     type="email"
                                     value={formData.corporateEmail}
-                                    onChange={(e) => onFormDataChange({ corporateEmail: e.target.value })}
+                                    onChange={(e) => onFormDataChange({corporateEmail: e.target.value})}
                                     className="block w-full rounded-md border-0 py-2.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6"
                                 />
-                                {errors.corporateEmail && <p className="text-sm text-red-600">{errors.corporateEmail}</p>}
+                                {errors.corporateEmail &&
+                                    <p className="text-sm text-red-600">{errors.corporateEmail}</p>}
                             </div>
                         </div>
 
@@ -102,7 +188,7 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
                                     id="job-role"
                                     name="jobRole"
                                     value={formData.jobRole}
-                                    onChange={(e) => onFormDataChange({ jobRole: e.target.value })}
+                                    onChange={(e) => onFormDataChange({jobRole: e.target.value})}
                                     className="block w-full rounded-md border-0 py-2.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-lg sm:leading-6"
                                 >
                                     <option value="">Select Job Role</option>
@@ -114,7 +200,8 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
                         </div>
 
                         <div className="sm:col-span-3">
-                            <label htmlFor="employment-status" className="block text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor="employment-status"
+                                   className="block text-sm font-medium leading-6 text-gray-900">
                                 Employment Status
                             </label>
                             <div className="mt-2">
@@ -122,7 +209,7 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
                                     id="employment-status"
                                     name="employmentStatus"
                                     value={formData.employmentStatus}
-                                    onChange={(e) => onFormDataChange({ employmentStatus: e.target.value })}
+                                    onChange={(e) => onFormDataChange({employmentStatus: e.target.value})}
                                     className="block w-full rounded-md border-0 py-2.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-lg sm:leading-6"
                                 >
                                     <option value="">Select Employment Status</option>
@@ -141,16 +228,19 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
                                     id="reporting-to"
                                     name="reportingTo"
                                     value={formData.reportingTo}
-                                    onChange={(e) => onFormDataChange({ reportingTo: e.target.value })}
+                                    onChange={(e) => onFormDataChange({reportingTo: e.target.value})}
                                     className="block w-full rounded-md border-0 py-2.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-lg sm:leading-6"
                                 >
-                                    <option value="">Select Reporting To</option>
-                                    <option value="Manager 1">Manager 1</option>
-                                    <option value="Manager 2">Manager 2</option>
-                                    <option value="Manager 3">Manager 3</option>
+                                    <option value="">Select Manager</option>
+                                    {employees.map((employee) => (
+                                        <option key={employee.id} value={employee.employeeId}>
+                                            {employee.firstName}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                         </div>
+
 
                         <fieldset className="sm:col-span-full">
                             <legend className="text-sm font-semibold leading-6 text-gray-900">Role</legend>
@@ -162,10 +252,11 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
                                         type="radio"
                                         value="admin"
                                         checked={formData.role === 'admin'}
-                                        onChange={() => onFormDataChange({ role: 'admin' })}
+                                        onChange={() => onFormDataChange({role: 'admin'})}
                                         className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                     />
-                                    <label htmlFor="role-admin" className="block text-sm font-medium leading-6 text-gray-900">
+                                    <label htmlFor="role-admin"
+                                           className="block text-sm font-medium leading-6 text-gray-900">
                                         Admin
                                     </label>
                                 </div>
@@ -176,10 +267,11 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
                                         type="radio"
                                         value="employee"
                                         checked={formData.role === 'employee'}
-                                        onChange={() => onFormDataChange({ role: 'employee' })}
+                                        onChange={() => onFormDataChange({role: 'employee'})}
                                         className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                     />
-                                    <label htmlFor="role-employee" className="block text-sm font-medium leading-6 text-gray-900">
+                                    <label htmlFor="role-employee"
+                                           className="block text-sm font-medium leading-6 text-gray-900">
                                         Employee
                                     </label>
                                 </div>
@@ -192,7 +284,8 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
                     <button type="button" className="text-sm font-semibold leading-6 text-gray-900" onClick={onBack}>
                         Back
                     </button>
-                    <button type="submit" className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 -offset-2 focus-visible:outline-indigo-600">
+                    <button type="submit"
+                            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 -offset-2 focus-visible:outline-indigo-600">
                         Next
                     </button>
                 </div>

@@ -3,6 +3,7 @@ import React from 'react';
 const SuccessPage = ({ formData, onCancel }) => {
     const { credentials } = formData; // Assuming formData has credentials
 
+
     return (
         <div className="success-page p-6">
             <h2 className="text-xl font-semibold leading-7 text-gray-900">Success!</h2>
@@ -25,6 +26,7 @@ const SuccessPage = ({ formData, onCancel }) => {
                     type="button"
                     className="text-sm font-semibold text-indigo-600 hover:underline"
                     onClick={onCancel}
+
                 >
                     Close
                 </button>

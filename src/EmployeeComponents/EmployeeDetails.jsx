@@ -97,6 +97,8 @@ export default function EmployeeDetails() {
                                 <InfoItem icon={<EnvelopeIcon />} label="Personal Email" value={employee.email || "N/A"} />
                                 <InfoItem icon={<EnvelopeIcon />} label="Corporate Email" value={employee.corporateEmail || "N/A"} />
                                 <InfoItem icon={<UserGroupIcon />} label="Reporting to" value={employee.reportingTo || "N/A"} />
+                                <InfoItem icon={<UserGroupIcon />} label="Reporting to" value={employee.employeeId || "N/A"} />
+
                                 <InfoItem icon={<BriefcaseIcon />} label="Job role" value={employee.jobRole || "N/A"} />
                                 <InfoItem
                                     icon={<ClockIcon />}

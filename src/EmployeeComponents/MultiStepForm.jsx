@@ -27,6 +27,8 @@ const MultiStepForm = ({ onCancel }) => {
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState(initialFormData);
 
+
+
     const handleNext = () => {
         setStep(step + 1);
     };
@@ -46,6 +48,8 @@ const MultiStepForm = ({ onCancel }) => {
         setStep(1);
         setFormData(initialFormData);
         onCancel();
+        window.location.reload();
+
     };
 
     return (
@@ -74,7 +78,8 @@ const MultiStepForm = ({ onCancel }) => {
                     onBack={handleBack}
                     onFormDataChange={handleFormDataChange}
                     onCancel={handleCancel}
-                />
+                                    />
+
             )}
             {step === 4 && (
                 <SuccessPage

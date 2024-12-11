@@ -11,6 +11,9 @@ import Contacts from './HomePage/MyContacts/Contacts';
 import NewContacts from './HomePage/MyContacts/NewContacts';
 import UpdateContacts from './HomePage/MyContacts/UpdateContacts';
 import ContactsDetails from './HomePage/MyContacts/ContactsDetails';
+import AssignedTasks from './HomePage/Tasks/AssignedTasks';
+import MyTasks from './HomePage/Tasks/MyTasks';
+import EmployeesList from './HomePage/Tasks/EmployeesList';
 // import { jwtDecode } from 'jwt-decode';
 // import  { useEffect} from 'react';
 // import { useNavigate } from 'react-router-dom';
@@ -55,6 +58,9 @@ function Main() {
                 <Route path='/NewContacts' element={<NewContacts/>}/>
                 <Route path='/ContactsDetails/:contactId' element={<ContactsDetails/>}/>
                 <Route path='/UpdateContacts/:contactId' element={<UpdateContacts/>}/>
+                <Route path="/AssignedTasks" element={<AssignedTasks/>} />
+                <Route path="/MyTasks" element={<MyTasks/>} />
+                <Route path='/CreateTask' element={<EmployeesList/>}/>
             </Routes>
         </>
     );

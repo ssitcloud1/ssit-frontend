@@ -34,6 +34,7 @@ const TokenExpirationCheck = () => {
                 localStorage.clear();
 
                 navigate('/login'); // Redirect to login page
+              console.log(1);
             } else {
                 console.log('Token is still valid.');
             }
