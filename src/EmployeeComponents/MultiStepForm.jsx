@@ -46,6 +46,8 @@ const MultiStepForm = ({ onCancel }) => {
         setStep(1);
         setFormData(initialFormData);
         onCancel();
+        window.location.reload();
+
     };
 
     return (
