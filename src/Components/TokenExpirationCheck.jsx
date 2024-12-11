@@ -26,14 +26,15 @@ const TokenExpirationCheck = () => {
         const intervalId = setInterval(() => {
             isTokenExpired(token);
             if (!token || isTokenExpired(token)) {
-                console.log('Token expired or missing. Redirecting to login...');
-                localStorage.removeItem('token'); // Clear invalid token
-                // Optionally clear other session data
-                localStorage.removeItem('email');
-                localStorage.removeItem('role');
-                localStorage.clear();
-
-                navigate('/login'); // Redirect to login page
+//                 console.log('Token expired or missing. Redirecting to login...');
+//                 localStorage.removeItem('token'); // Clear invalid token
+//                 // Optionally clear other session data
+//                 localStorage.removeItem('email');
+//                 localStorage.removeItem('role');
+//                 localStorage.clear();
+//
+//                 navigate('/login'); // Redirect to login page
+              console.log(1);
             } else {
                 console.log('Token is still valid.');
             }
