@@ -1,5 +1,4 @@
 import { Dialog } from '@headlessui/react';
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 export default function ModalWrapper({ open, onClose, children }) {
     const handleClose = (event) => {
