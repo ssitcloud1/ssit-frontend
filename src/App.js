@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Navbar from './HomePage/Navbar';
 import Login from './Components/Login';
 import Register from './Components/Register';
@@ -14,60 +14,56 @@ import ContactsDetails from './HomePage/MyContacts/ContactsDetails';
 import AssignedTasks from './HomePage/Tasks/AssignedTasks';
 import MyTasks from './HomePage/Tasks/MyTasks';
 import EmployeesList from './HomePage/Tasks/EmployeesList';
-// import { jwtDecode } from 'jwt-decode';
-// import  { useEffect} from 'react';
-// import { useNavigate } from 'react-router-dom';
+import ManagerTimesheets from './Timesheet/ManagerTimesheets';
+import EmployeeHomePage from './Timesheet/EmployeeHomePage';
+import TimesheetManagement from './Timesheet/TimesheetManagement';
+import TimesheetSubmission from './Timesheet/TimesheetSubmission';
 
 function App() {
-    
-   
+  const [submissions, setSubmissions] = useState([]);
 
-    const isLoggedIn = localStorage.getItem('token') && localStorage.getItem('email') && localStorage.getItem('role');
+  const isLoggedIn = localStorage.getItem('token') && localStorage.getItem('email') && localStorage.getItem('role');
 
-
-
-
-
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login />} />
-                <Route path="/register" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Register />} />
-                {/* Redirect to login if not logged in */}
-                <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
-                <Route path="/*" element={<Main />} />
-            </Routes>
-        </BrowserRouter>
-    );
+  return (
+    <Router>
+      <Routes>
+        <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login />} />
+        <Route path="/register" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Register />} />
+        {/* Redirect to login if not logged in */}
+        <Route path="/" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
+        <Route path="/*" element={<Main submissions={submissions} setSubmissions={setSubmissions} />} />
+      </Routes>
+    </Router>
+  );
 }
 
-function Main() {
-    const location = useLocation();
-    const showNavbar = !['/login', '/register'].includes(location.pathname);
+function Main({ submissions, setSubmissions }) {
+  const location = useLocation();
+  const showNavbar = !['/login', '/register'].includes(location.pathname);
 
-    return (
-        <>
-            {showNavbar && <Navbar />}
-            <TokenExpirationCheck/>
-            <Routes>
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/employee" element={<Employee />} />
-                {/* Add more routes as needed */}
-                <Route path="/employeedetails/:employeeId" element={<EmployeeDetails />} />
-                <Route path="/Contacts" element={<Contacts/>} />
-                <Route path='/NewContacts' element={<NewContacts/>}/>
-                <Route path='/ContactsDetails/:contactId' element={<ContactsDetails/>}/>
-                <Route path='/UpdateContacts/:contactId' element={<UpdateContacts/>}/>
-                <Route path="/AssignedTasks" element={<AssignedTasks/>} />
-                <Route path="/MyTasks" element={<MyTasks/>} />
-                <Route path='/CreateTask' element={<EmployeesList/>}/>
-            </Routes>
-        </>
-    );
+  return (
+    <>
+      {showNavbar && <Navbar />}
+      <TokenExpirationCheck />
+      <Routes>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/employee" element={<Employee />} />
+        {/* Add more routes as needed */}
+        <Route path="/employeedetails/:employeeId" element={<EmployeeDetails />} />
+        <Route path="/Contacts" element={<Contacts />} />
+        <Route path="/NewContacts" element={<NewContacts />} />
+        <Route path="/ContactsDetails/:contactId" element={<ContactsDetails />} />
+        <Route path="/UpdateContacts/:contactId" element={<UpdateContacts />} />
+        <Route path="/AssignedTasks" element={<AssignedTasks />} />
+        <Route path="/MyTasks" element={<MyTasks />} />
+        <Route path="/CreateTask" element={<EmployeesList />} />
+        <Route path="/ReceivedTimesheets" element={<ManagerTimesheets />} />
+        <Route path="/SubmittedTimesheets" element={<EmployeeHomePage submissions={submissions} setSubmissions={setSubmissions} />} />
+        <Route path="/timesheet-management" element={<TimesheetManagement setSubmissions={setSubmissions} />} />
+        <Route path="/timesheet-submission" element={<TimesheetSubmission setSubmissions={setSubmissions} />} />
+      </Routes>
+    </>
+  );
 }
 
 export default App;
-
-
-
- 
