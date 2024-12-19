@@ -4,13 +4,12 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
     const [errors, setErrors] = useState({});
 
     const [employees, setEmployees] = useState([]);
-    const [ setLoading] = useState(false);
-    const [ setEmployeeExists] = useState(false);
+    // const [ setLoading] = useState(false);
+    const [employeeExists, setEmployeeExists] = useState(false);
 
     useEffect(() => {
         const fetchEmployees = async () => {
             const token = localStorage.getItem('token');
-            setLoading(true);
             try {
                 const response = await fetch('https://talents-backend.azurewebsites.net/api/v1/employeeManager/employees', {
                     method: 'GET',
@@ -28,8 +27,6 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
                 setEmployees(data);
             } catch (error) {
                 console.error('Error fetching employees:', error);
-            } finally {
-                setLoading(false);
             }
         };
 
@@ -138,6 +135,9 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
                                     className="block w-full rounded-md border-0 py-2.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6"
                                 />
                                 {errors.employeeId && <p className="text-sm text-red-600">{errors.employeeId}</p>}
+                                {employeeExists && (
+                                    <p className="text-sm text-red-600">This Employee ID already exists. Please use a unique ID.</p>
+                                )}
                             </div>
                         </div>
 
