@@ -38,7 +38,7 @@ const ContactsDetails = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8085/apis/employees/contacts/contacts/${contactId}`);
+                const response = await axios.get(`https://talents-backend2.azurewebsites.net/apis/employees/contacts/contacts/${contactId}`);
                 console.log(response.data);
                 setFormData(response.data);
                 setLoading(true);
