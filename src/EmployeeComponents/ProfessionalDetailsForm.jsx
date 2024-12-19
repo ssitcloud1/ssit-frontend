@@ -4,8 +4,8 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
     const [errors, setErrors] = useState({});
 
     const [employees, setEmployees] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [employeeExists, setEmployeeExists] = useState(false);
+    const [ setLoading] = useState(false);
+    const [ setEmployeeExists] = useState(false);
 
     useEffect(() => {
         const fetchEmployees = async () => {
@@ -46,10 +46,6 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
             newErrors.companyName = "Company Name should accept numbers and characters.";
         }
 
-        // Validate Employee ID (Only numbers)
-        // if (!/^\d+$/.test(formData.employeeId)) {
-        //     newErrors.employeeId = "Employee ID should contain only numbers.";
-        // }
 
         // Validate Corporate Email
         if (!/\S+@\S+\.\S+/.test(formData.corporateEmail)) {
@@ -63,21 +59,6 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
         return newErrors;
     };
 
-
-    // const checkEmployeeIdExists = async (employeeId) => {
-    //     try {
-    //         const response = await fetch(`http://localhost:8085/api/v1/employeeManager/exists/${employeeId}`);
-    //         const data = await response.json();
-    //         if (data === true) {
-    //             return true; // Employee ID exists
-    //         } else {
-    //             return false; // Employee ID does not exist
-    //         }
-    //     } catch (error) {
-    //         console.error('Error checking employee ID:', error);
-    //         return false;
-    //     }
-    // };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
