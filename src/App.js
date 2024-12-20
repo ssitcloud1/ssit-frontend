@@ -65,7 +65,7 @@ function Main({ submissions, setSubmissions }) {
         <Route path="/SubmittedTimesheets" element={<EmployeeHomePage submissions={submissions} setSubmissions={setSubmissions} />} />
         <Route path="/timesheet-management" element={<TimesheetManagement setSubmissions={setSubmissions} />} />
         <Route path="/timesheet-submission" element={<TimesheetSubmission setSubmissions={setSubmissions} />} />
-        <Route path="/leaveform" element={<LeaveRequestForm />} />
+        <Route path="/LeaveForm" element={<LeaveRequestForm />} />
         <Route path="/ReceivedLeaves" element={<LeaveApprovalDashboard />} />
         <Route path='/SubmittedLeaves' element={<LeaveEmployee />} />
       </Routes>
