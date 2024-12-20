@@ -118,7 +118,7 @@ function LeaveRequestForm() {
         : `https://naveen-module.azurewebsites.net/leave/submit`;
        let response;
         if(!isEditing){
-          console.log(formData);
+          console.log("POST Request:",formData);
           response = await axios({
             method:  'POST',
             url,
@@ -131,7 +131,7 @@ function LeaveRequestForm() {
     
         }
         else{
-          
+          console.log("PUT Request:", formData);
           response = await axios({
             method:  'PUT',
             url,
