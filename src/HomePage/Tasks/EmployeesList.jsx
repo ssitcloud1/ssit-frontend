@@ -148,7 +148,7 @@ const EmployeesList=props=>{
                      </div>
                      <div>
 
-             {/*       <Modal isOpen={isOpen}  style={customStyles}> {/*popup to open task form*/} */}
+             {/*       <Modal isOpen={isOpen}  style={customStyles}> {/*popup to open task form*/}
              {/*         <div className="flex flex-col justify-center items-center"> */}
              {/*         <button onClick={taskCreate} type="button" className="self-end text-red-600"><IoCloseCircleOutline className="size-12"/></button> */}
              {/*       <AddTask taskCreate={taskCreate} personToAddTask={personToAddTask}/> */}

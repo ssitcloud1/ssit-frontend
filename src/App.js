@@ -18,6 +18,10 @@ import ManagerTimesheets from './Timesheet/ManagerTimesheets';
 import EmployeeHomePage from './Timesheet/EmployeeHomePage';
 import TimesheetManagement from './Timesheet/TimesheetManagement';
 import TimesheetSubmission from './Timesheet/TimesheetSubmission';
+//leave imports
+import LeaveApprovalDashboard from './Leave/LeaveAdmin.jsx'
+import LeaveRequestForm from './Leave/LeaveForm.jsx'
+import LeaveEmployee from './Leave/LeaveEmployee.jsx';
 
 function App() {
   const [submissions, setSubmissions] = useState([]);
@@ -61,6 +65,9 @@ function Main({ submissions, setSubmissions }) {
         <Route path="/SubmittedTimesheets" element={<EmployeeHomePage submissions={submissions} setSubmissions={setSubmissions} />} />
         <Route path="/timesheet-management" element={<TimesheetManagement setSubmissions={setSubmissions} />} />
         <Route path="/timesheet-submission" element={<TimesheetSubmission setSubmissions={setSubmissions} />} />
+        <Route path="/leaveform" element={<LeaveRequestForm />} />
+        <Route path="/ReceivedLeaves" element={<LeaveApprovalDashboard />} />
+        <Route path='/SubmittedLeaves' element={<LeaveEmployee />} />
       </Routes>
     </>
   );
