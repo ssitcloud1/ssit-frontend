@@ -73,7 +73,7 @@ export default function Employee() {
         }
 
         try {
-            const response = await fetch(`http://localhost:8085/api/v1/employeeManager/employees/${employeeId}`, {
+            const response = await fetch(`https://talents-backend.azurewebsites.net/api/v1/employeeManager/employees/${employeeId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
