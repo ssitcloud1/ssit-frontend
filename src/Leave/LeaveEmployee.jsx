@@ -51,7 +51,7 @@ export default function LeaveEmployee({ employeeId = 'MTL1014' }) {
   }
 
   const handleEditRequest = (request) => {
-    navigate("/Leave", {
+    navigate("/LeaveForm", {
       state: {
         edit: true,
         ...request // passing all details for editing
