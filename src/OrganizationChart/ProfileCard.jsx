@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import {  EnvelopeIcon, PhoneIcon, MapPinIcon, BriefcaseIcon } from "@heroicons/react/24/outline";
+import {  EnvelopeIcon,  MapPinIcon, BriefcaseIcon } from "@heroicons/react/24/outline";
 
 export default function ProfileCard({ employeeId ,employee}) {
   const [employeeData, setEmployeeData] = useState(null);
