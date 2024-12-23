@@ -69,7 +69,7 @@ function Main({ submissions, setSubmissions }) {
         <Route path="/LeaveForm" element={<LeaveRequestForm />} />
         <Route path="/ReceivedLeaves" element={<LeaveApprovalDashboard />} />
         <Route path='/SubmittedLeaves' element={<LeaveEmployee />} />
-        <Route path='/OrgChart' element={<Chart/>}/>
+        <Route path='/Organization-Chart' element={<Chart/>}/>
       </Routes>
     </>
   );

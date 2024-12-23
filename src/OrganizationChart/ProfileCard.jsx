@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import {  EnvelopeIcon,  MapPinIcon, BriefcaseIcon } from "@heroicons/react/24/outline";
+import {  EnvelopeIcon,  MapPinIcon, BriefcaseIcon,UserCircleIcon } from "@heroicons/react/24/outline";
 
 export default function ProfileCard({ employeeId ,employee}) {
   const [employeeData, setEmployeeData] = useState(null);
@@ -47,15 +47,19 @@ export default function ProfileCard({ employeeId ,employee}) {
         <div className="mt-6 space-y-4">
           <div className="flex items-center space-x-3 text-gray-700">
             <EnvelopeIcon className="w-5 h-5" />
-            <span>{employeeData.email}</span>
+            <span>{employeeData.corporateEmail}</span>
+          </div>
+          <div className="flex items-center space-x-3 text-gray-700">
+            <BriefcaseIcon className="w-5 h-5" />
+            <span>{employeeData.jobRole}</span>
+          </div>
+          <div className="flex items-center space-x-3 text-gray-700">
+          <UserCircleIcon className="w-5 h-5" />
+            <span>{employeeData.employeeId}</span>
           </div>
           <div className="flex items-center space-x-3 text-gray-700">
             <MapPinIcon className="w-5 h-5" />
             <span>{employeeData.country}</span>
-          </div>
-          <div className="flex items-center space-x-3 text-gray-700">
-            <BriefcaseIcon className="w-5 h-5" />
-            <span>{employeeData.role}</span>
           </div>
         </div>
       </div>

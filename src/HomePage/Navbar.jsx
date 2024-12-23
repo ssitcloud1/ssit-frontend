@@ -26,7 +26,8 @@ const Me = [
     { name: 'Employment', description: 'Connect with third-party tools', href: '#', icon: SquaresPlusIcon },
     { name: 'Contacts', description: 'Build strategic funnels that will convert', href: '#', icon: ArrowPathIcon },
     { name: 'RecievedBadges', description: 'Connect with third-party tools', href: '#', icon: SquaresPlusIcon },
-    { name: 'MyTasks', description: 'Tasks assigned to you', href: '#', icon: ArrowPathIcon },
+    { name: 'MyTasks', description: 'Tasks assigned to you', href: '/OrgChart', icon: ArrowPathIcon },
+    { name: 'Organization-Chart', description: "Visual representation of company hierarchy", href: '#', icon: SquaresPlusIcon },
 ]
 
 function classNames(...classes) {

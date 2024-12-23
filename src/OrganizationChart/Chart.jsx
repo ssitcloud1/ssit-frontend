@@ -101,7 +101,7 @@ export default function Chart() {
       } catch (error) {
         // If an error occurs (e.g., 404), set an error message
         console.error('Error fetching data:', error);
-        setErrorMessage("there are no reporting employees to this person");
+        setErrorMessage("There are no reporting employees");
         setReportingEmployees([]); // Reset reporting employees in case of failure
       }
 
@@ -188,7 +188,7 @@ export default function Chart() {
         )}
       </div>
 
-      <div className="flex flex-col items-center space-y-8">
+      <div className="flex flex-col text-center items-center space-y-8">
         <div className="w-full max-w-4xl overflow-x-auto">
           <div className="inline-flex flex-col items-center space-y-4 p-4">
             {originData.map((each, index) => (
@@ -206,15 +206,15 @@ export default function Chart() {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row w-full max-w-4xl space-y-8 md:space-y-0 md:space-x-8">
+        <div className="flex flex-col md:flex-row w-full max-w-6xl space-y-8 md:space-y-0 md:space-x-8">
           <div className="flex-1">
             <ProfileCard employeeId={employeeId} /> {/* Pass the employeeId to display profile */}
           </div>
           
           {reportingEmployees.length > 0 ? (
-            <div className="flex-1 bg-white rounded-lg shadow-lg p-6">
+            <div className="flex-1 bg-white rounded-lg shadow-lg p-6 ">
               <h2 className="text-2xl font-semibold text-blue-800 mb-4">Reporting Employees</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                 {reportingEmployees.map((each) => (
                   <ChartNode
                     key={each.employeeId} // Ensure the key is unique for reporting employees
@@ -227,7 +227,7 @@ export default function Chart() {
             </div>
           ) : (
             <div className="flex-1 bg-white rounded-lg shadow-lg p-6">
-              <h2 className="text-2xl font-semibold text-blue-800 mb-4">No Reporting Employees</h2>
+              <h2 className="text-2xl font-semibold text-blue-800 mb-4">Reporting Employees</h2>
               <p className="text-gray-600">{errorMessage || "This employee has no direct reports."}</p>
             </div>
           )}
