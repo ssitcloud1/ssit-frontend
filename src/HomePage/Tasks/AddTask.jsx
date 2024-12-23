@@ -1,29 +1,22 @@
 import { useState } from 'react';
 import axios from "axios";
+import Loader from '../../Assets/Loader';
 
-
-// Main component for adding a task
 export default function AddTask(props) {
-  // Destructure props to get taskCreate function and personToAddTask data
   const { taskCreate, personToAddTask } = props;
+  const [personName, setName] = useState(personToAddTask[0]?.name || "");
+  const [email, setEmail] = useState(personToAddTask[0]?.email || "");
+  const [taskName, setTaskName] = useState("");
+  const [taskDetails, setTaskDetails] = useState("");
+  const [effectiveDate, setEffectiveDate] = useState("");
+  const [dueDate, setDueDate] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
-  // State variables to hold form data and status
-  const [personName, setName] = useState(personToAddTask[0]?.name || ""); // Get name from personToAddTask or default to empty
-  const [email, setEmail] = useState(personToAddTask[0]?.email || ""); // Get email from personToAddTask or default to empty
-  const [taskName, setTaskName] = useState(""); // Task title
-  const [taskDetails, setTaskDetails] = useState(""); // Task details
-  const [effectiveDate, setEffectiveDate] = useState(""); // Effective date for the task
-  const [dueDate, setDueDate] = useState(""); // Due date for the task
-  const [isLoading, setIsLoading] = useState(false); // Loading state for the form submission
-  const [isError, setIsError] = useState(false); // Error state for form validation
-
-  // Function to handle form submission
   const taskCreated = async (event) => {
-    event.preventDefault(); // Prevent default form submission
-
-    // Create task details object to send to the API
+    event.preventDefault();
     const taskDetailsd = {
-      taskAssignedFrom: localStorage.getItem('email'), // Email of the person creating the task
+      taskAssignedFrom: localStorage.getItem('email'),
       personName,
       personEmail: email,
       taskName,
@@ -32,17 +25,9 @@ export default function AddTask(props) {
       dueDate,
     };
 
-    // Check if mandatory fields are filled
     if (taskName !== "" && taskDetails !== "") {
-      setIsLoading(true); // Set loading state
+      setIsLoading(true);
       try {
-        // Send POST request to the API to create the task
-//         axios.post("http://localhost:8091/apis/employees/notifications",{
-//           "notificationType":"Tasks",
-//           "notification":"you hava a new task, click here to see task details",
-//           "notificationTo":email,
-//           "isRead":false
-//       })
         await axios.post("https://talents-backebd3.azurewebsites.net/apis/employees/tasks", {
           taskAssignedFrom: localStorage.getItem('email'),
           personName,
@@ -51,145 +36,130 @@ export default function AddTask(props) {
           taskDetails,
           effectiveDate,
           dueDate,
-          taskStatus: false, // Initial task status
+          taskStatus: false,
         });
-
-        // If successful, reset error state and close the modal
         setIsError(false);
         console.log(taskDetailsd);
-        taskCreate(); // Call taskCreate function to refresh or close the modal
+        taskCreate();
       } catch (error) {
         console.error("Error creating task:", error);
-        setIsError(true); // Set error state on failure
+        setIsError(true);
       } finally {
-        setIsLoading(false); // Reset loading state
+        setIsLoading(false);
       }
     } else {
-      setIsError(true); // Set error state if mandatory fields are empty
+      setIsError(true);
     }
   };
 
   return (
-    <form action="#" method="POST" onSubmit={taskCreated} className="mx-auto mt-16 max-w-xl sm:mt-20">
-      <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-        {/* Full Name Input */}
-        <div className="sm:col-span-2">
-          <label htmlFor="fullName" className="block text-2xl font-semibold leading-6 text-gray-900">
-            Full name
-          </label>
-          <div className="mt-2.5">
+    <div>
+      {isLoading && <Loader/>}
+      <form onSubmit={taskCreated} className="mx-auto mt-8 max-w-2xl bg-white shadow-lg rounded-lg overflow-hidden">
+      <div className="px-6 py-8">
+        <h2 className="text-4xl font-bold text-gray-800 mb-6">Add New Task</h2>
+        <div className="space-y-6">
+          <div>
+            <label htmlFor="fullName" className="block text-lg font-medium text-gray-700 mb-1">
+              Full name
+            </label>
             <input
               type="text"
               name="fullName"
               id="fullName"
               autoComplete="given-name"
               value={personName}
-              onChange={event => setName(event.target.value)} // Update name state on change
-              className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-2xl sm:leading-6"
+              onChange={event => setName(event.target.value)}
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-lg"
             />
           </div>
-        </div>
 
-        {/* Email Input */}
-        <div className="sm:col-span-2">
-          <label htmlFor="email" className="block text-2xl font-semibold leading-6 text-gray-900">
-            Email
-          </label>
-          <div className="mt-2.5">
+          <div>
+            <label htmlFor="email" className="block text-lg font-medium text-gray-700 mb-1">
+              Email
+            </label>
             <input
               type="email"
               name="email"
               id="email"
               autoComplete="email"
               value={email}
-              onChange={event => setEmail(event.target.value)} // Update email state on change
-              className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-2xl sm:leading-6"
+              onChange={event => setEmail(event.target.value)}
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-lg"
             />
           </div>
-        </div>
 
-        {/* Task Title Input */}
-        <div className="sm:col-span-2">
-          <label htmlFor="taskTitle" className="block text-2xl font-semibold leading-6 text-gray-900">
-            Task Title <span className='text-red-600'>*</span>
-          </label>
-          <div className="relative mt-2.5">
+          <div>
+            <label htmlFor="taskTitle" className="block text-lg font-medium text-gray-700 mb-1">
+              Task Title <span className="text-red-600">*</span>
+            </label>
             <input
               type="text"
               name="taskTitle"
               id="taskTitle"
               autoComplete="off"
               value={taskName}
-              onChange={event => setTaskName(event.target.value)} // Update task name state on change
-              className="block w-full rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-2xl sm:leading-6"
+              onChange={event => setTaskName(event.target.value)}
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-lg"
             />
           </div>
-        </div>
 
-        {/* Task Details Textarea */}
-        <div className="sm:col-span-2">
-          <label htmlFor="taskDetails" className="block text-2xl font-semibold leading-6 text-gray-900">
-            Task Details <span className='text-red-800'>*</span>
-          </label>
-          <div className="mt-2.5">
+          <div>
+            <label htmlFor="taskDetails" className="block text-lg font-medium text-gray-700 mb-1">
+              Task Details <span className="text-red-600">*</span>
+            </label>
             <textarea
               name="taskDetails"
               id="taskDetails"
-              rows={5}
+              rows={4}
               value={taskDetails}
-              onChange={event => setTaskDetails(event.target.value)} // Update task details state on change
-              className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-2xl sm:leading-6"
-              defaultValue={''}
+              onChange={event => setTaskDetails(event.target.value)}
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-lg"
             />
           </div>
-        </div>
 
-        {/* Effective Date Input */}
-        <div className="sm:col-span-2">
-          <label htmlFor="effectiveDate" className="block text-2xl font-semibold leading-6 text-gray-900">
-            Effective Date
-          </label>
-          <div className="relative mt-2.5">
+          <div>
+            <label htmlFor="effectiveDate" className="block text-lg font-medium text-gray-700 mb-1">
+              Effective Date
+            </label>
             <input
               type="date"
               name="effectiveDate"
               id="effectiveDate"
               value={effectiveDate}
-              onChange={event => setEffectiveDate(event.target.value)} // Update effective date state on change
-              className="block w-full rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-2xl sm:leading-6"
+              onChange={event => setEffectiveDate(event.target.value)}
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-lg"
             />
           </div>
-        </div>
 
-        {/* Due Date Input */}
-        <div className="sm:col-span-2 md:row-span-2">
-          <label htmlFor="dueDate" className="block text-2xl font-semibold leading-6 text-gray-900">
-            Due Date
-          </label>
-          <div className="relative mt-2.5">
+          <div>
+            <label htmlFor="dueDate" className="block text-lg font-medium text-gray-700 mb-1">
+              Due Date
+            </label>
             <input
               type="date"
               name="dueDate"
               id="dueDate"
               value={dueDate}
-              onChange={event => setDueDate(event.target.value)} // Update due date state on change
-              className="block w-full rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-2xl sm:leading-6"
+              onChange={event => setDueDate(event.target.value)}
+              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-lg"
             />
           </div>
         </div>
       </div>
 
-      {/* Submit Button and Feedback Messages */}
-      <div className="mt-10">
+      <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
         <button
           type="submit"
-          className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          className="w-full px-4 py-2 text-lg font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
           Add Task
         </button>
-        {isLoading && <p className='text-blue-600'>Please Wait....</p>} {/* Loading message */}
-        {isError && <p className='text-red-600'>*Please Fill Mandatory Fields</p>} {/* Error message */}
+        {isLoading && <p className="mt-2 text-lg text-blue-600">Please Wait...</p>}
+        {isError && <p className="mt-2 text-lg text-red-600">*Please Fill Mandatory Fields</p>}
       </div>
     </form>
+    </div>
   );
 }
+

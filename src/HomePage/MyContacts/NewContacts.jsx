@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from "axios";
+import Loader from '../../Assets/Loader';
 
 const NewContacts = () => {
     const [formData, setFormData] = useState({
@@ -38,7 +39,7 @@ const NewContacts = () => {
         if(formData.personName!=="" && formData.personMobile!==""){
             setIsError(false);
             setIsAdding(true);
-        await axios.post("https://talents-backend2.azurewebsites.net/apis/employees/contacts/contacts", formData);
+        await axios.post("https://krupa-contacts.azurewebsites.net/apis/employees/contacts/contacts", formData);
         setIsAdding(false);
         setShowPopup(true);
         }
@@ -71,6 +72,7 @@ const NewContacts = () => {
 
     return (
         <div>
+            {isAdding && <Loader/>}
         <form onSubmit={handleSubmit} className="w-full max-w-4xl mx-auto p-8 bg-white shadow-md rounded-md h-full">
             <h2 className="text-3xl font-bold mb-6">Person Information</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">

@@ -4,14 +4,16 @@ import TaskItem from './TaskItem';
 import { Navigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import UpdateTasks from './UpdateTasks';
-
+import { IoCloseCircleOutline } from "react-icons/io5";
 import { FaSearch } from 'react-icons/fa';
 import { PlusIcon } from "@heroicons/react/16/solid";
 import { Link } from 'react-router-dom';
+import Loader from '../../Assets/Loader';
+import Empty from '../../Assets/Empty.svg'
 
 const AssignedTasks = (props) => {
-  const [data, setData] = useState(null);
-  const [isLoading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [isLoading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [taskData, setTaskData] = useState(null);
 
@@ -38,9 +40,10 @@ const AssignedTasks = (props) => {
       try {
         const response = await axios.get(url);
         setData(response.data);
-        setLoading(true);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
+        setLoading(false);
       }
     };
 
@@ -63,6 +66,7 @@ const AssignedTasks = (props) => {
   }
 
   const confirmDelete = async () => {
+    setLoading(true);
     const id = deleteId;
     await axios.delete(`https://talents-backebd3.azurewebsites.net/apis/employees/tasks/${id}`);
 
@@ -80,7 +84,7 @@ const AssignedTasks = (props) => {
       try {
         const response = await axios.get(url);
         setData(response.data);
-        setLoading(true);
+        setLoading(false);
         setIsDelete(false);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -91,11 +95,12 @@ const AssignedTasks = (props) => {
   }
 
   const taskUpdate = async (taskId) => {
+    setLoading(true);
     if (!isOpen) {
       try {
         const response = await axios.get(`https://talents-backebd3.azurewebsites.net/apis/employees/tasks/${taskId}`);
         setTaskData(response.data);
-        setLoading(true);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -115,7 +120,7 @@ const AssignedTasks = (props) => {
         try {
           const response = await axios.get(url);
           setData(response.data);
-          setLoading(true);
+          setLoading(false);
           setIsDelete(false);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -140,7 +145,7 @@ const AssignedTasks = (props) => {
   // Function to handle task type change
   const taskTypeChange=(event)=>{
 
-
+      setLoading(true);
       const fetchData = async () => {
       setTaskType(event.target.value);
       setCurrentPage(1);
@@ -169,8 +174,9 @@ const AssignedTasks = (props) => {
       try {
         const response = await axios.get(url);
         setData(response.data);
-        setLoading(true)
+        setLoading(false)
       } catch (error) {
+        setLoading(false);
         console.error('Error fetching data:', error);
       }
     };
@@ -184,7 +190,7 @@ const AssignedTasks = (props) => {
     );
 
     return (
-        <div> {isOpen ? <UpdateTasks taskUpdate={taskUpdate} taskData={taskData} />:
+        <div> 
       <div>
 
 {/*           <Transition appear show={isOpen} as={Fragment}> */}
@@ -256,6 +262,25 @@ const AssignedTasks = (props) => {
 {/*             </div> */}
 {/*           </div> */}
 {/*         </Modal> */}
+
+<Modal
+        isOpen={isOpen}
+        onRequestClose={() => setIsOpen(false)}
+        className="fixed inset-0 flex items-center justify-center p-4"
+        overlayClassName="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+      >
+        <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-auto">
+          <div className="p-6">
+            <div className="flex justify-between items-center mb-4">
+              
+              <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-gray-500">
+                <IoCloseCircleOutline className="h-8 w-8" />
+              </button>
+            </div>
+            <UpdateTasks taskUpdate={taskUpdate} taskData={taskData} />
+          </div>
+        </div>
+      </Modal>
 
 <Modal isOpen={isDelete} style={customStylesDelete}>
           <div className="flex flex-col justify-center items-center">
@@ -330,7 +355,7 @@ const AssignedTasks = (props) => {
             Next
           </button>
         </div>
-      </div>}</div>
+      </div></div>
     );
   };
 
@@ -389,7 +414,7 @@ const AssignedTasks = (props) => {
         </div>
       </div>
 
-      {isLoading && table()}
+      {isLoading ? <Loader/>: data.length===0 ? <img className='mt-40 ml-auto mr-auto h-80 self-center ' src={Empty} alt="No Data FOund"/>:table()}
     </div>
   );
 }

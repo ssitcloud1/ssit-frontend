@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../../Assets/Loader';
 
 const UpdateContacts = () => {
     const [formData, setFormData] = useState({
@@ -32,7 +33,7 @@ const UpdateContacts = () => {
         const fetchData = async () => {
 
           try {
-            const response = await axios.get(`https://talents-backend2.azurewebsites.net/apis/employees/contacts/contacts/${contactId}`);
+            const response = await axios.get(`https://krupa-contacts.azurewebsites.net/apis/employees/contacts/contacts/${contactId}`);
             console.log(response.data);
             setFormData(response.data);
 
@@ -55,13 +56,15 @@ const UpdateContacts = () => {
     const handleSubmit = async(e) => {
         e.preventDefault();
         setIsAdding(true);
-        await axios.put(`https://talents-backend2.azurewebsites.net/apis/employees/contacts/contacts/${contactId}`, formData);
+        await axios.put(`https://krupa-contacts.azurewebsites.net/apis/employees/contacts/contacts/${contactId}`, formData);
         setIsAdding(false);
         navigate(`/ContactsDetails/${contactId}`)
     };
 
     return (
-        <form onSubmit={handleSubmit} className="w-full max-w-4xl mx-auto p-8 bg-white shadow-md rounded-md h-full">
+        <div>
+            {isAdding && <Loader/>}
+            <form onSubmit={handleSubmit} className="w-full max-w-4xl mx-auto p-8 bg-white shadow-md rounded-md h-full">
             <h2 className="text-3xl font-bold mb-6">Person Information</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
@@ -170,6 +173,7 @@ const UpdateContacts = () => {
             {isAdding?<p className='text-green-500'>Updating Contact.....</p>:null}
             </div>
         </form>
+        </div>
     );
 };
 

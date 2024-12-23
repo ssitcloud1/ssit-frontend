@@ -23,6 +23,10 @@ import LeaveApprovalDashboard from './Leave/LeaveAdmin.jsx'
 import LeaveRequestForm from './Leave/LeaveForm.jsx'
 import LeaveEmployee from './Leave/LeaveEmployee.jsx';
 import Chart from './OrganizationChart/Chart.jsx';
+import GivenBadges from './HomePage/Badges/GivenBadges';
+import OtherEmployeesList from './HomePage/Badges/OtherEmployeesList';
+import Badges from './HomePage/Badges/Badges';
+import RecievedBadges from './HomePage/Badges/RecievedBadges';
 
 function App() {
   const [submissions, setSubmissions] = useState([]);
@@ -70,6 +74,10 @@ function Main({ submissions, setSubmissions }) {
         <Route path="/ReceivedLeaves" element={<LeaveApprovalDashboard />} />
         <Route path='/SubmittedLeaves' element={<LeaveEmployee />} />
         <Route path='/Organization-Chart' element={<Chart/>}/>
+        <Route path='/GivenBadges' element={<GivenBadges/>}/>
+        <Route path='/RecievedBadges' element={<RecievedBadges/>}/>
+        <Route path='/Badges' element={<Badges/>}/>
+        <Route path='/OtherEmployeesList' element={<OtherEmployeesList/>}/>
       </Routes>
     </>
   );
