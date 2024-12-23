@@ -175,79 +175,101 @@ export default function LeaveApprovalDashboard({managerId = 'MTL1008'}) {
   };
 
   const renderActions = (data) => {
-    // Check if it's in edit mode (whether it's pending, approved, or rejected)
+    // Check if the request is being edited (edit mode is toggled)
     if (isEditing[data.id]) {
-      // If the status is PENDING, show both Approve and Reject buttons
-      if (data.leaveStatus === "PENDING") {
+      if (data.leaveStatus === "APPROVED") {
+        // If the status is "APPROVED", show "Reject" and "Download" buttons when editing
         return (
-          <>
-            <button
-              className="bg-green-500 text-white text-xs px-3 py-2 rounded"
-              onClick={() => handleApprove(data.id)}
-            >
-              Approve
-            </button>
+          <div className="flex items-center space-x-2">
             <button
               className="bg-red-500 text-white text-xs px-3 py-2 rounded"
-              onClick={() => openRejectModal(data.id)}
+              onClick={() => openRejectModal(data.id)} // Open the rejection modal
             >
               Reject
             </button>
-          </>
+            {data.medicalDocument && (
+              <AttachmentItem
+                key={data.employeeId}
+                filename="medical Document"
+                fileUrl={data.medicalDocument}
+                icon={<MdOutlineFileDownload className="h-6 w-6 text-gray-400" />}
+              />
+            )}
+          </div>
         );
       }
-  
-      // If the status is APPROVED, only show Reject button
-      if (data.leaveStatus === "APPROVED") {
-        return (
-          <button
-            className="bg-red-500 text-white text-xs px-3 py-2 rounded"
-            onClick={() => openRejectModal(data.id)}
-          >
-            Reject
-          </button>
-        );
-      }
-  
-      // If the status is REJECTED, only show Approve button
+      
       if (data.leaveStatus === "REJECTED") {
+        // If the status is "REJECTED", show "Approve" and "Download" buttons when editing
         return (
-          <button
-            className="bg-green-500 text-white text-xs px-3 py-2 rounded"
-            onClick={() => handleApprove(data.id)}
-          >
-            Approve
-          </button>
+          <div className="flex items-center space-x-2">
+            <button
+              className="bg-green-500 text-white text-xs px-3 py-2 rounded"
+              onClick={() => handleApprove(data.id)} // Approve the request
+            >
+              Approve
+            </button>
+            {data.medicalDocument && (
+              <AttachmentItem
+                key={data.employeeId}
+                filename="medical Document"
+                fileUrl={data.medicalDocument}
+                icon={<MdOutlineFileDownload className="h-6 w-6 text-gray-400" />}
+              />
+            )}
+          </div>
         );
       }
     }
   
-    // Default: If not in edit mode, show only the Edit button
-    return (
-        <div className="relative flex items-center space-x-2">
-          {/* Edit button */}
+    // Default actions for when the request is not in edit mode
+    if (data.leaveStatus === "PENDING") {
+      return (
+        <div className="flex items-center space-x-2">
           <button
-            className="bg-blue-500 text-white text-xs px-3 py-2 rounded"
-            onClick={() => toggleEdit(data.id)} // Toggle the edit mode
+            className="bg-green-500 text-white text-xs px-3 py-2 rounded"
+            onClick={() => handleApprove(data.id)} // Approve the request
           >
-            Edit
+            Approve
           </button>
-    
-          {/* Display the download button if a medical document is available */}
+          <button
+            className="bg-red-500 text-white text-xs px-3 py-2 rounded"
+            onClick={() => openRejectModal(data.id)} // Open the rejection modal
+          >
+            Reject
+          </button>
           {data.medicalDocument && (
-            <div className='absolute left-full pl-2'>
             <AttachmentItem
               key={data.employeeId}
               filename="medical Document"
               fileUrl={data.medicalDocument}
               icon={<MdOutlineFileDownload className="h-6 w-6 text-gray-400" />}
             />
-            </div>
           )}
         </div>
       );
-  };
+    }
   
+    // If the status is APPROVED or REJECTED, show the Edit button and download button
+    return (
+      <div className="flex items-center space-x-2">
+        <button
+          className="bg-blue-500 text-white text-xs px-3 py-2 rounded"
+          onClick={() => toggleEdit(data.id)} // Toggle edit mode
+        >
+          Edit
+        </button>
+        {data.medicalDocument && (
+          <AttachmentItem
+            key={data.employeeId}
+            filename="medical Document"
+            fileUrl={data.medicalDocument}
+            icon={<MdOutlineFileDownload className="h-6 w-6 text-gray-400" />}
+          />
+        )}
+      </div>
+    );
+  };
   
 
   return (
