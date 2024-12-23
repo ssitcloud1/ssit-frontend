@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import axios from "axios";
+import Loader from '../../Assets/Loader';
 
 
 export default function UpdateTasks(props) {
+  const[loading, setLoading]=useState(false);
   const {taskUpdate, taskData}=props
   const {taskId}=taskData
     const [personName, setName]=useState(taskData.personName)
@@ -21,7 +23,7 @@ export default function UpdateTasks(props) {
 
     const taskCreated=async(event)=>{
       event.preventDefault();
-
+      setLoading(true);
 
       if(taskName!=="" && taskDetails!==""){
         setIsError(false)
@@ -45,7 +47,9 @@ export default function UpdateTasks(props) {
     }
 
   return (
-    <form action="#" method="POST" onSubmit={taskCreated} className="mx-auto mt-16 max-w-xl sm:mt-20">
+    <div>
+      {loading && <Loader/>}
+      <form action="#" method="POST" onSubmit={taskCreated} className="mx-auto mt-16 max-w-xl sm:mt-20">
         <div className="grid grid-cols-1 grid-rows-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div className="lg:row-span-2">
             <label htmlFor="fullName" className="block text-2xl font-semibold leading-6 text-gray-900">
@@ -170,5 +174,6 @@ export default function UpdateTasks(props) {
           {isError && <p className='text-red-600'>*Please Fill Mandatory Fields</p>}
         </div>
       </form>
+    </div>
   )
 }

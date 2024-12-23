@@ -4,24 +4,30 @@ const MyTaskItem=(props)=>{
 
     var today = new Date(); // This gets today's date
 
-var anotherDate = new Date(dueDate); // This is another date you want to compare with today's date
+if(dueDate!==null){
+    var anotherDate = new Date(dueDate); // This is another date you want to compare with today's date
 
+}
+else{
+     anotherDate="";
+}
 const status=()=>{
     if(taskStatus){
         return <td className="px-6 py-4 whitespace-nowrap text-xl text-lime-700">
     Completed
-</td>}
-
-    else if (today.toDateString() === anotherDate.toDateString()) {
-        return <td className="px-6 py-4 whitespace-nowrap text-xl text-orange-500">
-    Complete by today
 </td>
     }
-else if (today < anotherDate) {
-    return <td className="px-6 py-4 whitespace-nowrap text-xl text-lime-700">
-    Pending
+    else if (today < anotherDate || anotherDate==="") {
+        return <td className="px-6 py-4 whitespace-nowrap text-xl text-blue-700">
+        Pending
+    </td>
+    }
+    else if (today.toDateString() === anotherDate.toDateString()) {
+        return <td className="px-6 py-4 whitespace-nowrap text-xl text-orange-500">
+    Last day
 </td>
-} else if (today > anotherDate) {
+    }
+ else if (today > anotherDate) {
     return <td className="px-6 py-4 whitespace-nowrap text-xl text-red-500">
     Overdue
 </td>

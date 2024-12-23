@@ -3,23 +3,27 @@ import axios from 'axios';
 import ContactsItem from './ContactsItem';
 import {Link} from "react-router-dom";
 import { FaSearch } from 'react-icons/fa';
+import Loader from '../../Assets/Loader';
+import Empty from '../../Assets/Empty.svg';
 
 const Contacts=()=>{
-    const [contacts, setContacts]=useState();
+    const [contacts, setContacts]=useState([]);
     const [isLoading, setLoading]=useState(false);
     const [searchValue, setSearchValue]=useState("");
 
 
 
     useEffect(() => {
+      setLoading(true);
         const fetchData = async () => {
             const email=localStorage.getItem('email');
           try {
-            const response = await axios.get(`https://talents-backend2.azurewebsites.net/apis/employees/contacts/contactsCreated/${email}`);
+            const response = await axios.get(`https://krupa-contacts.azurewebsites.net/apis/employees/contacts/contactsCreated/${email}`);
             console.log(response.data);
             setContacts(response.data);
-            setLoading(true)
+            setLoading(false);
           } catch (error) {
+            setLoading(false);
             console.error('Error fetching data:', error);
           }
         };
@@ -88,7 +92,7 @@ const Contacts=()=>{
     </div>
 
         </div>
-        {isLoading?contactsTable():null}
+        {isLoading? <Loader/> : contacts.length===0 ? <img className='mt-40 ml-auto mr-auto h-80 self-center ' src={Empty} alt="No Data FOund"/>: contactsTable()}
       </div>)
 
 }

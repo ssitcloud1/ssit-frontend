@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 const Me = [
     { name: 'Overview', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
-    { name: 'Planner', description: 'Speak directly to your customers', href: '#', icon: CursorArrowRaysIcon },
+    { name: 'Badges', description: 'Speak directly to your customers', href: '#', icon: CursorArrowRaysIcon },
     { name: 'SubmittedTimesheets', description: 'Speak directly to your customers', href: '#', icon: CursorArrowRaysIcon },
     { name: 'ReceivedTimesheets', description: 'Speak directly to your customers', href: '#', icon: CursorArrowRaysIcon },
     { name: 'SubmittedLeaves', description: 'Speak directly to your customers', href: '#', icon: CursorArrowRaysIcon },

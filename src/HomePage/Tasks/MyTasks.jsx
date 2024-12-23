@@ -1,163 +1,168 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MyTaskItem from './MyTaskItem';
-import {Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import Loader from '../../Assets/Loader';
+import Empty from '../../Assets/Empty.svg';
 
+const MyTasks = props => {
+  const [data, setData] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  const [taskType, setTaskType] = useState("allTasks");
 
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1); // Current page
+  const [itemsPerPage] = useState(5); // Items per page (can be adjusted)
 
-const MyTasks=props=>{
-    const [data, setData] = useState(null);
-    const [isLoading, setLoading]=useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      const email = localStorage.getItem('email');
+      try {
+        const response = await axios.get(`https://talents-backebd3.azurewebsites.net/apis/employees/tasksAssignedTo/${email}`);
+        setData(response.data);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.error('Error fetching data:', error);
+      }
+    };
 
-    const [taskType, setTaskType]=useState("allTasks");
-    const tab=false;
+    fetchData();
+  }, []); // Only run once when component mounts
 
-
-    useEffect(() => {
-      const fetchData = async () => {
-          const email=localStorage.getItem('email');
-        try {
-          const response = await axios.get(`https://talents-backebd3.azurewebsites.net/apis/employees/tasksAssignedTo/${email}`);
-          let filteredData;
-
-          if(tab){
-            filteredData=response.data.filter(each=>
-              each.taskStatus===true
-            )
-          }
-          else{
-            filteredData=response.data.filter(each=>
-              each.taskStatus===false
-            )
-          }
-          setData(filteredData);
-          setLoading(true)
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
-
-      fetchData();
-    });
-    console.log(data);
-
-
-
-
+  // If the user is not logged in, redirect to login page
   const isLoggedIn = localStorage.getItem('email');
-  console.log(isLoggedIn)
-  if (isLoggedIn===null){
-      return <Navigate to="/login"/>
-  };
-
-
-  const table=()=>{
-    return(
-        <div>
-        <table className="min-w-full divide-y divide-gray-200 mt-10">
-                                <thead className="bg-gray-50">
-                                <tr>
-                                    <th
-                                        scope="col"
-                                        className="px-6 py-3 text-left text-xl font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        Assigned By
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-6 py-3 text-left text-xl font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        Task Details
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-6 py-3 text-left text-xl font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                        Effective Date
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-6 py-3 text-left text-xl font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                       Due Date
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-6 py-3 text-left text-xl font-medium text-gray-500 uppercase tracking-wider"
-                                    >
-                                       Status
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
-                                {data.map(each => (
-                                    <MyTaskItem key={each.id} each={each} />
-                                ))}
-                                </tbody>
-                            </table>
-    </div>
-    )
+  if (isLoggedIn === null) {
+    return <Navigate to="/login" />;
   }
 
-  const taskTypeChange=(event)=>{
+  // Handle page change
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
+  // Calculate the items to display on the current page
+  const indexOfLastTask = currentPage * itemsPerPage;
+  const indexOfFirstTask = indexOfLastTask - itemsPerPage;
+  const currentTasks = data?.slice(indexOfFirstTask, indexOfLastTask) || [];
 
-    const fetchData = async () => {
+  // Function to handle task type change
+  const taskTypeChange = async (event) => {
+    setLoading(true);
     setTaskType(event.target.value);
-      const email=localStorage.getItem('email');
-      let url;
-    if(event.target.value==="allTasks"){
-      url=`https://talents-backebd3.azurewebsites.net/apis/employees/tasksAssignedTo/${email}`;
-      console.log(1);
-    }
-    else if(event.target.value==="overdueTasks"){
-      url=`https://talents-backebd3.azurewebsites.net/apis/employees/OverdueTasks/PersonEmail/${email}`;
-      console.log(2);
-    }
-    else if(event.target.value==="pendigTasks"){
-      url=`https://talents-backebd3.azurewebsites.net/apis/employees/PendingTasks/PersonEmail/${email}`;
-      console.log(2);
-    }
-    else if(event.target.value==="completedTasks"){
-      url=`https://talents-backebd3.azurewebsites.net/apis/employees/CompletedTasks/PersonEmail/${email}`;
-      console.log(2);
-    }
-    console.log(taskType);
-    console.log(url);
+    setCurrentPage(1); // Reset to the first page when task type changes
 
+    const email = localStorage.getItem('email');
+    let url;
+
+    if (event.target.value === "allTasks") {
+      url = `https://talents-backebd3.azurewebsites.net/apis/employees/tasksAssignedTo/${email}`;
+    } else if (event.target.value === "overdueTasks") {
+      url = `https://talents-backebd3.azurewebsites.net/apis/employees/OverdueTasks/PersonEmail/${email}`;
+    } else if (event.target.value === "pendingTasks") {
+      url = `https://talents-backebd3.azurewebsites.net/apis/employees/PendingTasks/PersonEmail/${email}`;
+    } else if (event.target.value === "completedTasks") {
+      url = `https://talents-backebd3.azurewebsites.net/apis/employees/CompletedTasks/PersonEmail/${email}`;
+    }
 
     try {
       const response = await axios.get(url);
       setData(response.data);
-      setLoading(true)
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error('Error fetching data:', error);
     }
   };
 
-  fetchData();
-  }
+  // Table component with pagination
+  const table = () => {
+    return (
+      <div>
+        <table className="min-w-full divide-y divide-gray-200 mt-10">
+          <thead className="bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xl font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Assigned By
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xl font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Task Details
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xl font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Effective Date
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xl font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Due Date
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xl font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Status
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {currentTasks.map(each => (
+              <MyTaskItem key={each.id} each={each} />
+            ))}
+          </tbody>
+        </table>
 
-
-
-  return (<div>
-    <h2 className="text-4xl font-bold leading-7 text-gray-900 sm:truncate sm:text-5xl sm:tracking-tight">
-                    Tasks Assigned to you
-                </h2>
-                <div className='flex flex-row mt-5 mb-5'>
-<select
-            value={taskType}
-            onChange={taskTypeChange}
-            className="ml-5 border border-gray-300 rounded-md"
+        {/* Pagination controls */}
+        <div className="flex justify-center mt-5">
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
           >
-            <option selected  value="allTasks">All Tasks</option>
-            <option  value="pendigTasks">Pending Tasks</option>
-            <option value="overdueTasks">Overdue Tasks</option>
-            <option value="completedTasks">Completed Tasks</option>
-          </select>
-    </div>
-    {isLoading && table()}
-  </div>)
-}
+            Prev
+          </button>
+          <span className="px-4 py-2">{currentPage}</span>
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage * itemsPerPage >= data.length}
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    );
+  };
 
-export default MyTasks
+  return (
+    <div>
+      <h2 className="text-4xl font-bold leading-7 text-gray-900 sm:truncate sm:text-5xl sm:tracking-tight">
+        Tasks Assigned to you
+      </h2>
+      <div className="flex flex-row mt-5 mb-5">
+        <select
+          value={taskType}
+          onChange={taskTypeChange}
+          className="ml-5 border border-gray-300 rounded-md"
+        >
+          <option selected value="allTasks">All Tasks</option>
+          <option value="pendingTasks">Pending Tasks</option>
+          <option value="overdueTasks">Overdue Tasks</option>
+          <option value="completedTasks">Completed Tasks</option>
+        </select>
+      </div>
+      {isLoading ? <Loader/>: data.length===0 ? <img className='mt-40 ml-auto mr-auto h-80 self-center ' src={Empty} alt="No Data FOund"/> : table() }
+    </div>
+  );
+};
+
+export default MyTasks;
