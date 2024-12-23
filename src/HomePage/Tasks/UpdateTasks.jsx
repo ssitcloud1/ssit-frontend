@@ -38,7 +38,7 @@ export default function UpdateTasks(props) {
         dueDate:dueDate,
         taskStatus:isChecked
       })
-
+        setLoading(false);
       taskUpdate()
       }
       else{
