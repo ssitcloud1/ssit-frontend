@@ -168,24 +168,24 @@ export default function Navbar() {
                         <div className="-my-6 divide-y divide-gray-500/10">
                             <div className="space-y-2 py-6">
                                 {navItems.map((item) => (
-                                    <a
+                                    <Link
                                         key={item.name}
-                                        href={item.href}
+                                        to={item.href}
                                         className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                                         onClick={() => setMobileMenuOpen(false)}
                                     >
                                         {item.name}
-                                    </a>
+                                    </Link>
                                 ))}
                             </div>
                             <div className="py-6">
-                                <a
+                                <Link
                                     onClick={handleSignOut}
                                     className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                                     // onClick={() => setMobileMenuOpen(false)}
                                 >
                                     Logout
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>
