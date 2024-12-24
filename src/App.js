@@ -28,6 +28,8 @@ import OtherEmployeesList from './HomePage/Badges/OtherEmployeesList';
 import Badges from './HomePage/Badges/Badges';
 import RecievedBadges from './HomePage/Badges/RecievedBadges';
 import Tasks from './HomePage/Tasks/Tasks.jsx'
+import LeaveMain from './Leave/LeaveMain.jsx'
+import TimesheetMain from './Timesheet/TimesheetMain.jsx';
 
 function App() {
   const [submissions, setSubmissions] = useState([]);
@@ -68,18 +70,20 @@ function Main({ submissions, setSubmissions }) {
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/MyTasks" element={<MyTasks />} />
         <Route path="/CreateTask" element={<EmployeesList />} />
-        <Route path="/ReceivedTimesheets" element={<ManagerTimesheets />} />
-        <Route path="/SubmittedTimesheets" element={<EmployeeHomePage submissions={submissions} setSubmissions={setSubmissions} />} />
+        <Route path="/ManagerTimesheets" element={<ManagerTimesheets />} />
+        <Route path="/EmployeeHomePage" element={<EmployeeHomePage submissions={submissions} setSubmissions={setSubmissions} />} />
         <Route path="/timesheet-management" element={<TimesheetManagement setSubmissions={setSubmissions} />} />
         <Route path="/timesheet-submission" element={<TimesheetSubmission setSubmissions={setSubmissions} />} />
+        <Route path='/TimesheetManage' element={<TimesheetMain/>}/>
         <Route path="/LeaveForm" element={<LeaveRequestForm />} />
         <Route path="/ReceivedLeaves" element={<LeaveApprovalDashboard />} />
         <Route path='/SubmittedLeaves' element={<LeaveEmployee />} />
-        <Route path='/Organization-Chart' element={<Chart/>}/>
+        <Route path='/OrgChart' element={<Chart/>}/>
         <Route path='/GivenBadges' element={<GivenBadges/>}/>
         <Route path='/RecievedBadges' element={<RecievedBadges/>}/>
         <Route path='/Badges' element={<Badges/>}/>
         <Route path='/OtherEmployeesList' element={<OtherEmployeesList/>}/>
+        <Route path='/LeaveManagement' element={<LeaveMain/>}/>
       </Routes>
     </>
   );

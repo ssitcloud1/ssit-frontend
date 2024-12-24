@@ -35,9 +35,9 @@ export default function Navbar() {
         { name: 'Employees', href: '/employee' },
         { name: 'Tasks', href: '/tasks' },
         { name: 'Contacts', href: '/contacts' },
-        { name: 'Org Chart', href: '/org-chart' },
-        { name: 'Timesheet', href: '/timesheet' },
-        { name: 'Leave Management', href: '/leave-management' },
+        { name: 'Organization Chart', href: '/OrgChart' },
+        { name: 'Timesheet', href: '/TimesheetManage' },
+        { name: 'Leave Management', href: '/LeaveManagement' },
         { name: 'Badges', href: '/badges' }
     ];
 
@@ -45,9 +45,9 @@ export default function Navbar() {
         { name: 'Dashboard', href: '/dashboard' },
         { name: 'Tasks', href: '/tasks' },
         { name: 'Contacts', href: '/contacts' },
-        { name: 'Org Chart', href: '/org-chart' },
-        { name: 'Timesheet', href: '/timesheet' },
-        { name: 'Leave Management', href: '/leave-management' },
+        { name: 'Organization Chart', href: '/OrgChart' },
+        { name: 'Timesheet', href: '/EmployeeHomePage' },
+        { name: 'Leave Management', href: '/LeaveManagement' },
         { name: 'Badges', href: '/badges' }
     ];
 
