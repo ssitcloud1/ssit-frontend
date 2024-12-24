@@ -42,7 +42,9 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
         if (!/^[a-zA-Z0-9\s]+$/.test(formData.companyName)) {
             newErrors.companyName = "Company Name should accept numbers and characters.";
         }
-
+        if (!/^[A-Z0-9]+$/.test(formData.employeeId)) {
+            newErrors.employeeId = "Employee ID must contain only uppercase letters and digits.For Example : MTL1010";
+        }
 
         // Validate Corporate Email
         if (!/\S+@\S+\.\S+/.test(formData.corporateEmail)) {
