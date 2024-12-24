@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Dialog, Popover, Transition, Menu } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { ChevronDownIcon, BellIcon } from '@heroicons/react/20/solid';
+import { BellIcon } from '@heroicons/react/20/solid';
 import { useNavigate } from "react-router-dom";
+import MTLogo from "../Assets/MTlogo.svg";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
@@ -37,6 +38,7 @@ export default function Navbar() {
         { name: 'Org Chart', href: '/org-chart' },
         { name: 'Timesheet', href: '/timesheet' },
         { name: 'Leave Management', href: '/leave-management' },
+        { name: 'Badges', href: '/badges' }
     ];
 
     const employeeNavItems = [
@@ -46,6 +48,7 @@ export default function Navbar() {
         { name: 'Org Chart', href: '/org-chart' },
         { name: 'Timesheet', href: '/timesheet' },
         { name: 'Leave Management', href: '/leave-management' },
+        { name: 'Badges', href: '/badges' }
     ];
 
     // Show admin nav items if role is 'admin', else show employee nav items
@@ -57,7 +60,7 @@ export default function Navbar() {
                 <div className="flex lg:flex-1">
                     <Link to="/dashboard" className="-m-1.5 p-1.5">
                         <span className="sr-only">Middleware</span>
-                        <img className="h-8 w-auto" src="/path-to-your-logo.png" alt="Middleware" />
+                        <img className="h-20 w-auto" src={MTLogo} alt="Middleware" />
                     </Link>
                 </div>
                 <div className="flex lg:hidden">

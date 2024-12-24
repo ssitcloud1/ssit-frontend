@@ -27,6 +27,7 @@ import GivenBadges from './HomePage/Badges/GivenBadges';
 import OtherEmployeesList from './HomePage/Badges/OtherEmployeesList';
 import Badges from './HomePage/Badges/Badges';
 import RecievedBadges from './HomePage/Badges/RecievedBadges';
+import Tasks from './HomePage/Tasks/Tasks.jsx'
 
 function App() {
   const [submissions, setSubmissions] = useState([]);
@@ -64,6 +65,7 @@ function Main({ submissions, setSubmissions }) {
         <Route path="/ContactsDetails/:contactId" element={<ContactsDetails />} />
         <Route path="/UpdateContacts/:contactId" element={<UpdateContacts />} />
         <Route path="/AssignedTasks" element={<AssignedTasks />} />
+        <Route path="/tasks" element={<Tasks />} />
         <Route path="/MyTasks" element={<MyTasks />} />
         <Route path="/CreateTask" element={<EmployeesList />} />
         <Route path="/ReceivedTimesheets" element={<ManagerTimesheets />} />
