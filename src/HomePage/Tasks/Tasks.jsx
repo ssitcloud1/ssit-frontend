@@ -5,7 +5,7 @@ import AssignedTasks from './AssignedTasks';
 import MyTasks from './MyTasks';
 
 
-const Badges=()=>{
+const Tasks=()=>{
     const [isTrue, setIsTrue]=useState(true);
     let btn1="border border-gray-950 rounded-lg w-80";
     let btn2="bg-blue-700 rounded-lg text-white w-80";
@@ -25,4 +25,4 @@ const Badges=()=>{
 
 }
 
-export default Badges
+export default Tasks
