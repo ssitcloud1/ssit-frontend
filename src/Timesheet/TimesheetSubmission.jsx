@@ -21,7 +21,7 @@ const TimesheetSubmission = ({ setSubmissions }) => {
 
       // Add the new submission to the list of submissions
       setSubmissions((prev) => [...prev, response.data]);
-      navigate('/SubmittedTimesheets'); // Navigate to employee home page
+      navigate('/EmployeeHomePage'); // Navigate to employee home page
 
     } catch (error) {
       console.log("Error submitting timesheet:", error);

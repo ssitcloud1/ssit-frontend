@@ -3,6 +3,7 @@ import axios from "axios";
 import Loader from "./loader.js";
 import Calendar from "react-calendar";
 import Pagination from './Pagination';
+import 'react-calendar/dist/Calendar.css';
 
 const ManagerTimesheets = () => {
   const [submissions, setSubmissions] = useState([]);
@@ -114,11 +115,11 @@ const ManagerTimesheets = () => {
 
             {showCalendar && (
               <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                <div className="bg-white rounded-lg shadow-lg p-4">
+                <div className="bg-white rounded-lg shadow-lg p-4 text-center">
                   <Calendar onChange={setDate} value={date} className="rounded-lg shadow-md" />
                   <button
                     onClick={() => setShowCalendar(false)}
-                    className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 ease-in-out"
+                    className="mt-4 w-40 bg-blue-600 text-white py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
                   >
                     Close
                   </button>
