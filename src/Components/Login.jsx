@@ -1,9 +1,3 @@
-
-
-
-
-
-
 import React, { useEffect, useState } from 'react';
 import '../SharedCSS/SharedCss.css';
 import { useNavigate, Link} from 'react-router-dom';
@@ -51,7 +45,9 @@ const Login = () => {
             // Log the extracted message and role
             console.log('Message:', message);
             console.log('Role from backend:', role);
-
+            console.log('First Name:', firstName);
+            console.log('Last Name:', lastName);
+            console.log('Employee ID:', employeeId);
             if (message === 'Email not exists') {
                 setError('* Email does not exist');
             } else if (message === 'Login Success') {
@@ -61,7 +57,12 @@ const Login = () => {
                 localStorage.setItem('email', email);
                 localStorage.setItem('role', role);
                 localStorage.setItem('token',tokenData);
+                localStorage.setItem('firstName', firstName);
+                localStorage.setItem('lastName', lastName);
+                localStorage.setItem('employeeId', employeeId);
                 console.log(tokenData);
+                console.log(firstName, lastName, employeeId);
+
                 // Navigate to the dashboard page and trigger updates across components
                 navigate('/dashboard');
                 window.dispatchEvent(new Event('storage')); // To trigger updates across components
