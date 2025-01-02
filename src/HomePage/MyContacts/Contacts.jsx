@@ -18,7 +18,7 @@ const Contacts=()=>{
         const fetchData = async () => {
             const email=localStorage.getItem('email');
           try {
-            const response = await axios.get(`https://krupa-contacts.azurewebsites.net/apis/employees/contacts/contactsCreated/${email}`);
+            const response = await axios.get(`https://ssit-contacts-backend.azurewebsites.net/apis/employees/contacts/contactsCreated/${email}`);
             console.log(response.data);
             setContacts(response.data);
             setLoading(false);

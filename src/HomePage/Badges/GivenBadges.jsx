@@ -18,7 +18,7 @@ const GivenBadges=()=>{
         const fetchData = async () => {
             const email=localStorage.getItem('email');
           try {
-            const response = await axios.get(`https://Badgets-krupa.azurewebsites.net/apis/employees/badges/BadgesAssignedBy/${email}`);
+            const response = await axios.get(`https://ssit-badgets-backend.azurewebsites.net/apis/employees/badges/BadgesAssignedBy/${email}`);
             console.log(response.data);
             setBadgesData(response.data.reverse());
             setLoading(false);

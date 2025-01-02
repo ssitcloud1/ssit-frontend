@@ -15,7 +15,7 @@ export default function LeaveEmployee({ employeeId = 'MTL1019' }) {
     const fetchLeaveRequests = async () => {
       let employeeId= 'MTL1019';
       try {
-        const response = await axios.get(`https://naveen-module.azurewebsites.net/leave/employee/${employeeId}`);
+        const response = await axios.get(`https://ssit-leaves-backend.azurewebsites.net/leave/employee/${employeeId}`);
         // Sort leave requests to put the most recent requests on top
         const leaves = response.data
         setLeaveRequests(leaves.sort((a, b) => (b.createdAt || b.id) - (a.createdAt || a.id)));
@@ -61,7 +61,7 @@ export default function LeaveEmployee({ employeeId = 'MTL1019' }) {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://naveen-module.azurewebsites.net/leave/delete/${id}`);
+      await axios.delete(`https://ssit-leaves-backend.azurewebsites.net/leave/delete/${id}`);
       setLeaveRequests((prevRequests) =>
         prevRequests.filter((request) => request.id !== id)
       );

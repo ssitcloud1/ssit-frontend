@@ -31,7 +31,7 @@ const Login = () => {
 
         try {
             // Send login request to the backend
-            const response = await axios.post('https://talents-backend.azurewebsites.net/api/v1/employeeManager/login', {
+            const response = await axios.post('https://ssit-loki-backend.azurewebsites.net/api/v1/employeeManager/login', {
                 email: email,
                 password: password,
             });
@@ -132,7 +132,7 @@ const Login = () => {
             </main>
             <div className="welcome-container">
                 <h1 className="heading-secondary">
-                    Welcome to <span className="lg">MT Buddy!</span>
+                    Welcome to <span className="lg">SSIT Buddy!</span>
                 </h1>
             </div>
         </div>

@@ -32,9 +32,9 @@ const AssignedTasks = (props) => {
       let url;
 
       if (taskType === "allTasks") {
-        url = `https://talents-backebd3.azurewebsites.net/apis/employees/tasksAssignedBy/${email}`;
+        url = `https://ssit-task-backend.azurewebsites.net/apis/employees/tasksAssignedBy/${email}`;
       } else if (taskType === "overdueTasks") {
-        url = `https://talents-backebd3.azurewebsites.net/apis/employees/OverdueTasks/AssignedFrom/${email}`;
+        url = `https://ssit-task-backend.azurewebsites.net/apis/employees/OverdueTasks/AssignedFrom/${email}`;
       }
 
       try {
@@ -68,7 +68,7 @@ const AssignedTasks = (props) => {
   const confirmDelete = async () => {
     setLoading(true);
     const id = deleteId;
-    await axios.delete(`https://talents-backebd3.azurewebsites.net/apis/employees/tasks/${id}`);
+    await axios.delete(`https://ssit-task-backend.azurewebsites.net/apis/employees/tasks/${id}`);
 
     // Refresh data after deletion
     const fetchData = async () => {
@@ -76,9 +76,9 @@ const AssignedTasks = (props) => {
       let url;
 
       if (taskType === "allTasks") {
-        url = `https://talents-backebd3.azurewebsites.net/apis/employees/tasksAssignedBy/${email}`;
+        url = `https://ssit-task-backend.azurewebsites.net/apis/employees/tasksAssignedBy/${email}`;
       } else if (taskType === "overdueTasks") {
-        url = `https://talents-backebd3.azurewebsites.net/apis/employees/OverdueTasks/AssignedFrom/${email}`;
+        url = `https://ssit-task-backend.azurewebsites.net/apis/employees/OverdueTasks/AssignedFrom/${email}`;
       }
 
       try {
@@ -98,7 +98,7 @@ const AssignedTasks = (props) => {
     setLoading(true);
     if (!isOpen) {
       try {
-        const response = await axios.get(`https://talents-backebd3.azurewebsites.net/apis/employees/tasks/${taskId}`);
+        const response = await axios.get(`https://ssit-task-backend.azurewebsites.net/apis/employees/tasks/${taskId}`);
         setTaskData(response.data);
         setLoading(false);
       } catch (error) {
@@ -112,9 +112,9 @@ const AssignedTasks = (props) => {
         let url;
 
         if (taskType === "allTasks") {
-          url = `https://talents-backebd3.azurewebsites.net/apis/employees/tasksAssignedBy/${email}`;
+          url = `https://ssit-task-backend.azurewebsites.net/apis/employees/tasksAssignedBy/${email}`;
         } else if (taskType === "overdueTasks") {
-          url = `https://talents-backebd3.azurewebsites.net/apis/employees/OverdueTasks/AssignedFrom/${email}`;
+          url = `https://ssit-task-backend.azurewebsites.net/apis/employees/OverdueTasks/AssignedFrom/${email}`;
         }
 
         try {
@@ -152,19 +152,19 @@ const AssignedTasks = (props) => {
         const email=localStorage.getItem('email');
         let url;
       if(event.target.value==="allTasks"){
-        url=`https://talents-backebd3.azurewebsites.net/apis/employees/tasksAssignedBy/${email}`;
+        url=`https://ssit-task-backend.azurewebsites.net/apis/employees/tasksAssignedBy/${email}`;
         console.log(1);
       }
       else if(event.target.value==="overdueTasks"){
-        url=`https://talents-backebd3.azurewebsites.net/apis/employees/OverdueTasks/AssignedFrom/${email}`;
+        url=`https://ssit-task-backend.azurewebsites.net/apis/employees/OverdueTasks/AssignedFrom/${email}`;
         console.log(2);
       }
       else if(event.target.value==="pendingTasks"){
-        url=`https://talents-backebd3.azurewebsites.net/apis/employees/PendingTasks/AssignedFrom/${email}`;
+        url=`https://ssit-task-backend.azurewebsites.net/apis/employees/PendingTasks/AssignedFrom/${email}`;
         console.log(2);
       }
       else if(event.target.value==="completedTasks"){
-        url=`https://talents-backebd3.azurewebsites.net/apis/employees/CompletedTasks/AssignedFrom/${email}`;
+        url=`https://ssit-task-backend.azurewebsites.net/apis/employees/CompletedTasks/AssignedFrom/${email}`;
         console.log(2);
       }
       console.log(taskType);

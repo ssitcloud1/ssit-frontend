@@ -28,7 +28,7 @@ export default function AddTask(props) {
     if (taskName !== "" && taskDetails !== "") {
       setIsLoading(true);
       try {
-        await axios.post("https://talents-backebd3.azurewebsites.net/apis/employees/tasks", {
+        await axios.post("https://ssit-task-backend.azurewebsites.net/apis/employees/tasks", {
           taskAssignedFrom: localStorage.getItem('email'),
           personName,
           personEmail: email,

@@ -34,7 +34,7 @@ export default function LeaveApprovalDashboard({managerId = 'MTL1008'}) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://naveen-module.azurewebsites.net/leave/manager/${managerId}`);
+        const response = await axios.get(`https://ssit-leaves-backend.azurewebsites.net/leave/manager/${managerId}`);
         const leaves = response.data;
         // Sort leaves with new entries at the top
         setData(leaves.sort((a, b) => (b.createdAt || b.id) - (a.createdAt || a.id))); // Assuming 'createdAt' is available
@@ -55,8 +55,8 @@ export default function LeaveApprovalDashboard({managerId = 'MTL1008'}) {
 
   const handleApprove = async (id) => {
     try {
-      await axios.put(`https://naveen-module.azurewebsites.net/leave/approve/${id}`);
-      const response = await axios.get(`https://naveen-module.azurewebsites.net/leave/manager/${managerId}`);
+      await axios.put(`https://ssit-leaves-backend.azurewebsites.net/leave/approve/${id}`);
+      const response = await axios.get(`https://ssit-leaves-backend.azurewebsites.net/leave/manager/${managerId}`);
 
     // Update the status count directly
     setStatusCount((prevStatusCount) => ({
@@ -85,8 +85,8 @@ export default function LeaveApprovalDashboard({managerId = 'MTL1008'}) {
       console.log(rejectionReason);
       // Encode the rejectionReason to ensure proper handling of special characters
     //const encodedReason = encodeURIComponent(rejectionReason);
-      await axios.put(`https://naveen-module.azurewebsites.net/leave/reject/${selectedLeaveId}/${rejectionReason}`);
-      const response = await axios.get(`https://naveen-module.azurewebsites.net/leave/manager/${managerId}`);
+      await axios.put(`https://ssit-leaves-backend.azurewebsites.net/leave/reject/${selectedLeaveId}/${rejectionReason}`);
+      const response = await axios.get(`https://ssit-leaves-backend.azurewebsites.net/leave/manager/${managerId}`);
       // Update the status count directly
     setStatusCount((prevStatusCount) => ({
       ...prevStatusCount,

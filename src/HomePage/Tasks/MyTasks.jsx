@@ -18,7 +18,7 @@ const MyTasks = props => {
     const fetchData = async () => {
       const email = localStorage.getItem('email');
       try {
-        const response = await axios.get(`https://talents-backebd3.azurewebsites.net/apis/employees/tasksAssignedTo/${email}`);
+        const response = await axios.get(`https://ssit-task-backend.azurewebsites.net/apis/employees/tasksAssignedTo/${email}`);
         setData(response.data);
         setLoading(false);
       } catch (error) {
@@ -56,13 +56,13 @@ const MyTasks = props => {
     let url;
 
     if (event.target.value === "allTasks") {
-      url = `https://talents-backebd3.azurewebsites.net/apis/employees/tasksAssignedTo/${email}`;
+      url = `https://ssit-task-backend.azurewebsites.net/apis/employees/tasksAssignedTo/${email}`;
     } else if (event.target.value === "overdueTasks") {
-      url = `https://talents-backebd3.azurewebsites.net/apis/employees/OverdueTasks/PersonEmail/${email}`;
+      url = `https://ssit-task-backend.azurewebsites.net/apis/employees/OverdueTasks/PersonEmail/${email}`;
     } else if (event.target.value === "pendingTasks") {
-      url = `https://talents-backebd3.azurewebsites.net/apis/employees/PendingTasks/PersonEmail/${email}`;
+      url = `https://ssit-task-backend.azurewebsites.net/apis/employees/PendingTasks/PersonEmail/${email}`;
     } else if (event.target.value === "completedTasks") {
-      url = `https://talents-backebd3.azurewebsites.net/apis/employees/CompletedTasks/PersonEmail/${email}`;
+      url = `https://ssit-task-backend.azurewebsites.net/apis/employees/CompletedTasks/PersonEmail/${email}`;
     }
 
     try {

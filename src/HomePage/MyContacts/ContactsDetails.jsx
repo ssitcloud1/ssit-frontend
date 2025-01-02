@@ -38,7 +38,7 @@ const ContactsDetails = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`https://krupa-contacts.azurewebsites.net/apis/employees/contacts/contacts/${contactId}`);
+                const response = await axios.get(`https://ssit-contacts-backend.azurewebsites.net/apis/employees/contacts/contacts/${contactId}`);
                 console.log(response.data);
                 setFormData(response.data);
                 setLoading(true);
@@ -58,7 +58,7 @@ const ContactsDetails = () => {
     };
 
     const deleteContact = async () => {
-        await axios.delete(`https://krupa-contacts.azurewebsites.net/apis/employees/contacts/contacts/${contactId}`);
+        await axios.delete(`https://ssit-contacts-backend.azurewebsites.net/apis/employees/contacts/contacts/${contactId}`);
         navigate('/Contacts');
     }
 

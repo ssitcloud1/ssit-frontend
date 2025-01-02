@@ -11,7 +11,7 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
         const fetchEmployees = async () => {
             const token = localStorage.getItem('token');
             try {
-                const response = await fetch('https://talents-backend.azurewebsites.net/api/v1/employeeManager/employees', {
+                const response = await fetch('https://ssit-loki-backend.azurewebsites.net/api/v1/employeeManager/employees', {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -51,9 +51,9 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
             newErrors.corporateEmail = "Please enter a valid email address.";
         }
 
-        const emailPattern = /^[a-zA-Z0-9._%+-]+@middlewaretalents\.com$/;
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@ssitcloud\.com$/;
         if (!emailPattern.test(formData.corporateEmail)) {
-            newErrors.corporateEmail = "Please enter a valid email address with @middlewaretalents.com domain.";
+            newErrors.corporateEmail = "Please enter a valid email address with @ssitcloud.com domain.";
         }
         return newErrors;
     };
@@ -68,7 +68,7 @@ const ProfessionalDetailsForm = ({ formData, onNext, onBack, onFormDataChange })
         if (Object.keys(validationErrors).length === 0) {
             try {
                 // Send the request to check if Employee ID exists
-                const response = await fetch(`https://talents-backend.azurewebsites.net/api/v1/employeeManager/exists/${formData.employeeId}`, {
+                const response = await fetch(`https://ssit-loki-backend.azurewebsites.net/api/v1/employeeManager/exists/${formData.employeeId}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,

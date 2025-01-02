@@ -77,9 +77,9 @@ function LeaveRequestForm() {
         }
 
         // Validation: Check for valid email
-        const emailPattern = /^[a-zA-Z0-9._%+-]+@(gmail\.com|middlewaretalents\.com)$/;
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@(gmail\.com|ssitcloud\.com)$/;
         if (!emailPattern.test(formData.email)) {
-            setLeaveError('Please enter a valid email address from @gmail.com or @middlewaretalents.com');
+            setLeaveError('Please enter a valid email address from @gmail.com or @ssitcloud.com');
             setErrors(true);
             return;
         }
@@ -112,8 +112,8 @@ function LeaveRequestForm() {
         try {
             console.log(formData);
             const url = isEditing
-                ? `https://naveen-module.azurewebsites.net/leave/update/${formData.id}`
-                : `https://naveen-module.azurewebsites.net/leave/submit`;
+                ? `https://ssit-leaves-backend.azurewebsites.net/leave/update/${formData.id}`
+                : `https://ssit-leaves-backend.azurewebsites.net/leave/submit`;
             let response;
             if (!isEditing) {
                 console.log("POST Request:", formData);
