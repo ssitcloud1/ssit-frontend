@@ -4,7 +4,7 @@ import { Dialog, Popover, Transition, Menu } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { BellIcon } from '@heroicons/react/20/solid';
 import { useNavigate } from "react-router-dom";
-import MTLogo from "../Assets/MTlogo.svg";
+import MTLogo from "../Assets/MTlogo.webp";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ');

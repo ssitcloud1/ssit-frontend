@@ -28,7 +28,7 @@ const Register = () => {
     const validateInput = () => {
         let isValid = true;
         const namePattern = /^[a-zA-Z\s]*$/;
-        const emailPattern = /^[a-zA-Z0-9._%+-]+@middlewaretalents\.com$/; // Restrict to middlewaretalents.com
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@ssitcloud\.com$/; // Restrict to middlewaretalents.com
 
         if (!employee_name) {
             setEmployeeNameError("* Please fill in the employee name.");
@@ -54,7 +54,7 @@ const Register = () => {
             setEmailError("* Please fill in the email.");
             isValid = false;
         } else if (!emailPattern.test(email)) {
-            setEmailError("* Email must end with @middlewaretalents.com.");
+            setEmailError("* Email must end with @ssit.com.");
             isValid = false;
         } else {
             setEmailError("");
